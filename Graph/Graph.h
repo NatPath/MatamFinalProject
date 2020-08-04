@@ -17,15 +17,18 @@ typedef string Vertex;
 typedef pair<Vertex,Vertex> Edge;
 typedef set<Vertex> Vertices;
 typedef set<Edge> Edges;
-typedef map<Vertex,set<Vertex>> GraphType;
+//typedef map<Vertex,set<Vertex>> GraphType;
 
 /**
  * Graph-
  * represents a Graph.
  * */
-class Graph : public GraphType{
+class Graph {
+    private:
     set<Vertex> vertices;
     set<Edge> edges;
+    
+    Graph full_graph();
     public:
     //constructors
     Graph();
@@ -35,7 +38,6 @@ class Graph : public GraphType{
     Graph(const Graph& to_copy);//copy constructor
     ~Graph()=default;//destructor
 
-    friend Graph full_graph();
 
 
     
@@ -43,9 +45,11 @@ class Graph : public GraphType{
     Graph operator=(Graph& b);//assignment
     Graph operator+(Graph& b);//union
     Graph operator^(Graph& b);//intersection 
-    Graph operator-(Graph& b));//difference
+    Graph operator-(Graph& b);//difference
     Graph operator*(Graph& b);//product
     Graph operator!();//complement
+
+    void print();
 
 
 

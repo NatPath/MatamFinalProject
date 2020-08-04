@@ -9,16 +9,37 @@ Graph::Graph(Vertices vertices, Edges edges){
         this->vertices=vertices;
         this->edges=edges;
     }
+    catch(...){
+        throw;
+    }
 }
 Graph::Graph(string to_parse){
 
 }
 
+//assignment
 Graph Graph::operator=(Graph& b){
 
-};//assignment
+}
+//union
 Graph Graph::operator+(Graph& b){
-    Graph dest;
+    Vertices new_vertices;
+    Edges new_edges;
+    std::set_union(
+        b.vertices.begin(),b.vertices.end(),
+        vertices.begin(),vertices.end(),
+        std::back_inserter(new_vertices)
+    );
+    std::set_union(
+        b.edges.begin(),b.edges.end(),
+        edges.begin(),edges.end(),
+        std::back_inserter(new_edges)
+    );
+    return Graph(new_vertices,new_edges);
+
+}
+//intersection 
+Graph Graph::operator^(Graph& b){
     Vertices new_vertices;
     Edges new_edges;
     std::set_intersection(
@@ -26,20 +47,20 @@ Graph Graph::operator+(Graph& b){
         vertices.begin(),vertices.end(),
         std::back_inserter(new_vertices)
     );
-    std::set_intersection(
+    std::set_union(
         b.edges.begin(),b.edges.end(),
         edges.begin(),edges.end(),
         std::back_inserter(new_edges)
     );
     return Graph(new_vertices,new_edges);
 
-};//union
-Graph Graph::operator^(Graph& b){
-
-};//intersection 
+}
+//product
 Graph Graph::operator*(Graph& b){
 
-};//product
+}
 Graph Graph::operator!(){
 
-};//complement
+
+}
+//complement
