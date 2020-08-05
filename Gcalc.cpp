@@ -36,7 +36,7 @@ void Gcalc::parse_command(const std::string& command){
     }
     //single word commands
     if(tokens.size()==1){
-        if(!tokens[0]=="quit"){
+        if(!(tokens[0]=="quit")){
             quit();
             return;
         }
@@ -66,7 +66,6 @@ void Gcalc::parse_command(const std::string& command){
         throw UnrecognizedCommandException(command);
     }
 }
-bool validGraphInitialization(const Tokens& expression);
 Graph Gcalc::makeGraph(const Tokens& graph_expression){
     //regular assignment
     if (graph_expression.size()==1 ){
@@ -81,10 +80,10 @@ Graph Gcalc::makeGraph(const Tokens& graph_expression){
             throw IllegalAssignmentException(graph_expression[0]);
         }
     }
-    //regular initialization
-    bool initilize_is_legal=validGraphInitialization(graph_expression);
-    if(graph_expression[0]=="{"&&graph_expression[0]=="}"){
-
+    //check regular initialization
+    Graph g;
+    if (validGraphInitialization(graph_expression,g)){
+        return g;
     }
 }
 

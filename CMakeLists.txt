@@ -7,7 +7,6 @@ enable_testing()
 
 add_executable(FinalProject 
         src/main.cpp
-        
         )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

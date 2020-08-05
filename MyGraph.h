@@ -7,7 +7,9 @@
 #include <set>
 #include <utility>
 #include <algorithm>
-#include <my_utils.h>
+
+#include "my_utils.h"
+
 
 
 
@@ -26,9 +28,11 @@ class Graph {
     Graph();
     Graph(Vertices vertices,Edges edges);
     Graph(std::string to_parse);
-
     Graph(const Graph& to_copy);//copy constructor
     ~Graph()=default;//destructor
+
+    void setEdges(const Edges& new_edges);
+    void setVertices(const Vertices& new_vertices);
 
 
 

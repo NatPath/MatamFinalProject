@@ -1,7 +1,6 @@
 #ifndef _EXCEPTIONS_H
 #define _EXCEPTIONS_H
 
-#include "my_utils.h"
 class ParserException : public std::exception{
     std::string error;
     public:
@@ -31,8 +30,10 @@ class IllegalAssignmentException: public ParserException{
 class IllegalEdgeNameException: public ParserException{
     public:
     IllegalEdgeNameException(const std::string& expression):
-    ParserException("Illegal edge name: "+expression);
-}
+    ParserException("Illegal edge name: "+expression){};
+};
+
+class OutOfRange{};
 
 
 

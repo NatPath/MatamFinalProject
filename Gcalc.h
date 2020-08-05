@@ -5,8 +5,9 @@
 #include <map>
 #include <string>
 #include <utility>
+
 #include "my_utils.h"
-#include "Graph.h"
+#include "MyGraph.h"
 
 typedef std::map<std::string,Graph> SymbolTable;
 enum Mode {menual,batch};

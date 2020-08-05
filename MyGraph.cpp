@@ -1,4 +1,4 @@
-#include "Graph.h"
+#include "MyGraph.h"
 
 /*
 bool check_graph_validity(Vertices vertices, Edges edges){
@@ -18,10 +18,15 @@ Graph::Graph(Vertices vertices, Edges edges){
 Graph::Graph(std::string to_parse){
 
 }
+void Graph::setEdges(const Edges& new_edges){
+    edges=new_edges;
+}
+void Graph::setVertices(const Vertices& new_vertices){
+    vertices=new_vertices;
+}
 
 //assignment
 Graph Graph::operator=(Graph& b){
-    Edge a;
 
 }
 //union
