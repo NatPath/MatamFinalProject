@@ -12,12 +12,6 @@
 #include <algorithm>
 
 
-typedef std::vector<std::string> Tokens;
-typedef std::string Vertex;
-typedef std::pair<Vertex,Vertex> Edge;
-typedef std::set<Vertex> Vertices;
-typedef std::set<Edge> Edges;
-
 template<class T>
 void print(T str){
     std::cout<<str<<std::endl;

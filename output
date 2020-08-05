@@ -1,0 +1,2 @@
+Error: Unrecognized Command: G = {v1, v2, v3 | <v1, v2>, <v1, v3>}
+Error: Unrecognized Command: print(G)

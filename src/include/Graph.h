@@ -2,21 +2,22 @@
 #define _GRAPH_H
 
 #include <iostream>
-#include <set>
 #include <string>
 #include <vector>
-#include <map>
+#include <set>
 #include <utility>
-#include <exception>
-#include <regex>
 #include <algorithm>
 
-
-using namespace std;
-typedef string Vertex;
-typedef pair<Vertex,Vertex> Edge;
-typedef set<Vertex> Vertices;
-typedef set<Edge> Edges;
+/*
+using std::cout;
+using std::string;
+using std::pair;
+using std::set;
+*/
+typedef std::string Vertex;
+typedef std::pair<Vertex,Vertex> Edge;
+typedef std::set<Vertex> Vertices;
+typedef std::set<Edge> Edges;
 //typedef map<Vertex,set<Vertex>> GraphType;
 
 /**
@@ -25,15 +26,15 @@ typedef set<Edge> Edges;
  * */
 class Graph {
     private:
-    set<Vertex> vertices;
-    set<Edge> edges;
+    std::set<Vertex> vertices;
+    std::set<Edge> edges;
     
     Graph full_graph();
     public:
     //constructors
     Graph();
     Graph(Vertices vertices,Edges edges);
-    Graph(string to_parse);
+    Graph(std::string to_parse);
 
     Graph(const Graph& to_copy);//copy constructor
     ~Graph()=default;//destructor
@@ -50,12 +51,6 @@ class Graph {
     Graph operator!();//complement
 
     void print();
-
-
-
-
-
-       
     
 };
 

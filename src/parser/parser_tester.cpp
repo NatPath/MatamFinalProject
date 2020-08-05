@@ -24,20 +24,18 @@ void testRegex(){
 
 }
 void testTokenizeString(){
-    print("Enter a string: ");
+    std::cout<<"Enter a string: "<<std::endl;
     std::string str;
     std::getline(std::cin,str);
     Tokens tokens= stringToTokens(str);
-    print("Printing Tokens: ");
-    print(tokens.size());
     for (auto i =tokens.begin() ;i != tokens.end();i++){
-        print(*i);
+        print(i);
     }
 }
 int main(){
     //testParathesesBalance();
-    //testRegex();
-    testTokenizeString();
+    testRegex();
+    //testTokenizeString();
 
 
 

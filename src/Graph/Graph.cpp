@@ -13,7 +13,7 @@ Graph::Graph(Vertices vertices, Edges edges){
         throw;
     }
 }
-Graph::Graph(string to_parse){
+Graph::Graph(std::string to_parse){
 
 }
 
