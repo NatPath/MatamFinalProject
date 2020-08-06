@@ -27,14 +27,15 @@ class Gcalc{
     void start();
     void parse_command(const std::string& command);
     void addGraph(Graph g);
-    Graph makeGraph(const Tokens& expression);
+    Graph makeGraph(const Tokens& expression) const;
     //commands
-    void who();
+    void who() const;
     void reset();
     void quit();
     void save();
-    void delete_op(const std::string& graph_name);
+    //void delete_op(const std::string& graph_name);
     void assignment_op(const std::string& graph_name,const Tokens& expressions);
+    void print_op(const Tokens& expression) const;
     void save_op(const std::string& expression);
     void load_op(const std::string& expression);
 

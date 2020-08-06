@@ -1,7 +1,7 @@
-#include "calc_parser.h"
 #include <stack>
+#include "calc_parser.h"
 
-bool validGraphName(std::string graph_name){
+bool validGraphName(const std::string& graph_name){
     std::regex reg ("[a-zA-Z]+[a-zA-Z0-9]*");
     bool res = std::regex_match(graph_name,reg);
     if (!res){
@@ -14,8 +14,8 @@ bool validVertexName(const std::string& vertex_name){
     std::regex contains_only_reg ("[[:alnum:]\\[\\];]*");
     bool contains_only = std::regex_match(vertex_name,contains_only_reg);
     if (!contains_only){
-        std::cout<<"Contains an illegal Character"<<std::endl;
-        print("contains illegal character");
+        //std::cout<<"Contains an illegal Character"<<std::endl;
+        //print("contains illegal character");
         throw ParserException("Vertex name Contains an illegal Character");
     }
     bool parenthesesBalanced=checkParenthesesBalance(vertex_name);
@@ -84,7 +84,7 @@ std::string insertSpaces(const std::string& str,const std::string delim){
     return res;
 }
 Tokens stringToTokens(const std::string& str){
-    const std::string delims= "+*^!,<>(){}|";
+    const std::string delims= "+*^!,<>(){}|=";
     std::string str_spaces_inserted=insertSpaces(str,delims);
     std::stringstream ss(str_spaces_inserted);
     std::string tmp;
@@ -109,9 +109,10 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     Edges edges;
     Vertices vertices;
     std::set<std::string> passed_edgers;
-    if (expression[0]=="{" && expression[-1]=="}"){
+    if (expression[0]=="{" && expression.back()=="}"){
+        //Tokens modified_expression=inRange(expression,1,expression.size()-1);
         //find '|'
-        auto pipe = std::find(expression.begin(),expression.end(),"|");
+        auto pipe = std::find(expression.begin(),expression.end()-1,"|");
         bool expecting_column=false;
         //all elements left of pipe should behave
         for (auto it=expression.begin()+1;it!=pipe;it++,expecting_column=!expecting_column){
@@ -128,13 +129,21 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
                 return false;
             }
         }        
-        //all elments right of pipe should behave
-        if (pipe==expression.end()){
-            graph.setEdges(edges);
-            graph.setVertices(vertices);
-            return true;
+
+        //checks if there is a column right before the pipe(unwanted)
+        if(expecting_column){
+            //pipe is either non apearant in the expression OR the last
+            if (pipe==expression.end()-1||pipe==expression.end()-2){
+                graph.setEdges(edges);
+                graph.setVertices(vertices);
+                return true;
+            }
         }
-        if ((expression.end()-pipe)%6!=5){
+        else{
+            return false;
+        }
+        //all elments right of pipe should behave
+        if ((expression.end()-pipe)%6!=1){
             return false;
         }
         expecting_column=false;
@@ -149,7 +158,7 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
             int start=it-expression.begin();
             Tokens edgers;
             try{
-                edgers=inRange(expression,start,start+4);
+                edgers=inRange(expression,start,start+5);
             }
             catch(OutOfRange e){
                 return false;
@@ -167,12 +176,19 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
             }
             it+=5;
         }
-        graph.setEdges(edges);
-        graph.setVertices(vertices);
-        return true;
+        if (check_graph_validity(vertices,edges)){
+            graph.setEdges(edges);
+            graph.setVertices(vertices);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     else{
         return false;
     }
+    //shouldn't get here
+    return false;
 }
 

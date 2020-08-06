@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "my_utils.h"
+#include "exceptions.h"
 
 
 
@@ -25,8 +26,8 @@ class Graph {
     Graph full_graph();
     public:
     //constructors
-    Graph();
-    Graph(Vertices vertices,Edges edges);
+    Graph()=default;
+    Graph(Vertices& vertices,Edges& edges);
     Graph(std::string to_parse);
     Graph(const Graph& to_copy);//copy constructor
     ~Graph()=default;//destructor
@@ -34,19 +35,19 @@ class Graph {
     void setEdges(const Edges& new_edges);
     void setVertices(const Vertices& new_vertices);
 
-
-
-    
     //operators
-    Graph operator=(Graph& b);//assignment
-    Graph operator+(Graph& b);//union
-    Graph operator^(Graph& b);//intersection 
-    Graph operator-(Graph& b);//difference
-    Graph operator*(Graph& b);//product
-    Graph operator!();//complement
-
-    void print();
+    Graph& operator=(const Graph& b);//assignment
+    Graph operator+(const Graph& b) const;//union
+    Graph operator^(const Graph& b) const;//intersection 
+    Graph operator-(const Graph& b) const;//difference
+    Graph operator*(const Graph& b) const;//product
+    Graph operator!() const;//complement
+    bool operator==(const Graph& b) const;
+    bool operator!=(const Graph& b) const;
+    void printGraph() const;
     
 };
+//maybe const??
+bool check_graph_validity(Vertices& vertices,Edges& edges);
 
 #endif

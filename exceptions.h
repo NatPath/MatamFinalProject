@@ -26,6 +26,11 @@ class IllegalAssignmentException: public ParserException{
     IllegalAssignmentException(const std::string& expression):
     ParserException("Illegal Assignment Expression: "+expression){};
 };
+class IllegalPrintingException: public ParserException{
+    public:
+    IllegalPrintingException(const std::string& expression):
+    ParserException("Illegal Assignment Expression: "+expression){};
+};
 
 class IllegalEdgeNameException: public ParserException{
     public:
@@ -33,7 +38,14 @@ class IllegalEdgeNameException: public ParserException{
     ParserException("Illegal edge name: "+expression){};
 };
 
-class OutOfRange{};
+class OutOfRange:public std::exception{};
+
+class GraphInitException: public ParserException{
+    public:
+    GraphInitException():
+    ParserException("Illegal Graph initialization"){};
+    
+};
 
 
 

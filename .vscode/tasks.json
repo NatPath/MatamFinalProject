@@ -20,7 +20,13 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "test",
+            "command": "g++ -std=c++11 -Wall -Werror -pedantic-errors -DNDEBUG -g calc_parser.cpp main.cpp my_utils.cpp Gcalc.cpp MyGraph.cpp"
         }
+
     ],
     "version": "2.0.0"
 }
