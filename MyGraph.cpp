@@ -1,4 +1,5 @@
 #include "MyGraph.h"
+#include <bitset>
 
 /*
 bool check_graph_validity(Vertices vertices, Edges edges){
@@ -13,6 +14,55 @@ bool check_graph_validity(Vertices& v,Edges& e){
     }
     return true;
 }
+void graphToBinaryFile(const Graph& graph,std::ofstream& file){
+
+    const Edges edges= graph.getEdges();
+    const Vertices vertices= graph.getVertices();
+
+    unsigned int num_vertices=vertices.size();
+    unsigned int num_edges=edges.size();
+
+    //write num_vertices to file
+    file.write(reinterpret_cast<const char*>(&num_vertices),sizeof(num_vertices));
+
+    //write num_edges to file
+    file.write(reinterpret_cast<const char*>(&num_edges),sizeof(num_edges));
+    unsigned int word_size;
+    char letter;
+    //write vertices
+    for (auto it = vertices.begin(); it!=vertices.end();it++){
+        word_size=it->size();
+        //write size_of vertex
+        file.write(reinterpret_cast<const char*>(&word_size),sizeof(word_size));
+        //write vertex letters
+        for (unsigned int i=0;i<it->size();i++){
+            letter=(*it)[i];
+            file.write(reinterpret_cast<const char*>(&letter),sizeof(char));
+
+        }
+    }
+    //write edges 
+    for (auto it = edges.begin();it!=edges.end();it++){
+        word_size=it->first.size();
+        //write first vertex of edge
+        file.write(reinterpret_cast<const char*>(&word_size),sizeof(word_size));
+        //write first vertex letters
+        for (unsigned int i=0;i<(it->first).size();i++){
+            letter=(it->first)[i];
+            file.write(reinterpret_cast<const char*>(&letter),sizeof(char));
+        }
+
+        word_size=it->second.size();
+        //write second vertex of edge
+        file.write(reinterpret_cast<const char*>(&word_size),sizeof(word_size));
+        //write second vertex letters
+        for (unsigned int i=0;i<(it->second).size();i++){
+            letter=(it->second)[i];
+            file.write(reinterpret_cast<const char*>(&letter),sizeof(char));
+        }
+    }
+}
+
 Graph::Graph(Vertices& vertices,Edges& edges){
     if(check_graph_validity(vertices,edges)){
         this->vertices=vertices;
@@ -113,4 +163,10 @@ void Graph::printGraph() const{
     for(auto it=edges.begin();it!=edges.end();it++){
         printEdge(*it);
     }
+}
+const Vertices& Graph::getVertices() const{
+    return vertices;        
+}
+const Edges& Graph::getEdges() const{
+    return edges;
 }

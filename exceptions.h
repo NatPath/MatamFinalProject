@@ -44,7 +44,37 @@ class GraphInitException: public ParserException{
     public:
     GraphInitException():
     ParserException("Illegal Graph initialization"){};
-    
+};
+
+class IllegalGraphExpression: public ParserException{
+    public:
+    IllegalGraphExpression(const std::string& expression):
+    ParserException("Illegal Graph Expression: " +expression){};
+};
+
+class IllegalSaveExpression: public ParserException{
+    public:
+    IllegalSaveExpression(const std::string& expression):
+    ParserException("Illegal Save Expression: " +expression){};
+};
+
+
+class FileDoesntExist: public ParserException{
+    public:
+    FileDoesntExist(const std::string& filename):
+    ParserException("File '" + filename +"' does not exist or can't open"){};
+};
+
+class CantWriteToFileException: public ParserException{
+    public:
+    CantWriteToFileException(const std::string& filename):
+    ParserException("Can't write to '" + filename +"'"){};
+};
+
+class FileDataIsNotAGraph: public ParserException{
+    public:
+    FileDataIsNotAGraph():
+    ParserException(" File data does not represent a valid graph"){};
 };
 
 

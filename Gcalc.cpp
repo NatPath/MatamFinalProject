@@ -23,8 +23,11 @@ void Gcalc::start(){
             try{
                 parse_command(command_filtered);
             }
-            catch(std::exception& e){
+            catch(ParserException& e){
                 print(e.what());
+            }
+            catch(std::exception& e){
+                std::cout<<"Error: "<<e.what()<<std::endl;
             }
         }
     }
@@ -53,6 +56,19 @@ void Gcalc::parse_command(const std::string& command){
             throw UnrecognizedCommandException(command);
         }
     }
+    //try save
+    if(tokens[0]=="save"){
+        if(tokens[1]=="(" && tokens[tokens.size()-1]==")"){
+            Tokens print_expressions(tokens.begin()+2,tokens.end()-1);
+            save_op(print_expressions);
+            return;
+        }
+        else{
+            throw UnrecognizedCommandException(command);
+        }
+
+
+    }
     //try delete
     if(tokens[0]=="delete"){
         if(tokens.size()==4 && tokens[1]=="(" && tokens[3]==")" ){
@@ -62,10 +78,12 @@ void Gcalc::parse_command(const std::string& command){
             else{
                 //doesn't really check if its even a variable.. but its just not something to delete
                 throw UndefinedVariableException(tokens[2]);
+                return;
             }
         }
         else{
             throw UnrecognizedCommandException(command);
+            return;
         }
     }
 
@@ -87,10 +105,17 @@ void Gcalc::parse_command(const std::string& command){
             assignment_op(tokens[0],assign_expressions);            
             return;
         }
-        catch(std::exception& e){
+        catch(ParserException& e){
             print(e.what());
+            return;
+        }
+        catch(std::exception& e){
+            std::cout<<"Error: "<<e.what()<<std::endl;
+            return;
         }
     }
+    //try save 
+
     throw UnrecognizedCommandException(command);
 }
 Graph Gcalc::makeGraph(const Tokens& graph_expression) const{
@@ -112,19 +137,29 @@ Graph Gcalc::makeGraph(const Tokens& graph_expression) const{
     if (validGraphInitialization(graph_expression,g)){
         return g;
     }
+    //check load(G)
+    if(validGraphLoad(graph_expression,g)){
+        return g;
+    }
+
+    //complex expression
+    if (complexGraphExpression(graph_expression,g)){
+        return g;
+    }
     else{
-        throw IllegalAssignmentException(TokensToString(graph_expression));
+        throw IllegalGraphExpression(TokensToString(graph_expression));
     }
 }
 
 void Gcalc::assignment_op(const std::string& graph_name,const Tokens& graph_expression){
+    Graph g;
     try{
-        Graph g(makeGraph(graph_expression));
-        variables[graph_name]=g;
+        g = makeGraph(graph_expression);
     }
-    catch(std::exception& e){
-        print(e.what());
+    catch(...){
+        throw;
     }
+    variables[graph_name]=g;
 }
 void Gcalc::who() const{
     for(auto it=variables.begin();it!=variables.end();it++){
@@ -149,5 +184,25 @@ void Gcalc::print_op(const Tokens& expressions)const{
         return;
     }
     g.printGraph();
-
+}
+void Gcalc::save_op(const Tokens& expression) const{
+    Graph g;
+    std::string filename = expression[expression.size()-1];
+    if (expression[expression.size()-2]!=","){
+        throw IllegalSaveExpression(TokensToString(expression));
+    }
+    Tokens graph_expression=inRange(expression,0,expression.size()-2);
+    try{
+        g=makeGraph(graph_expression);
+    }
+    catch(...){
+        throw;
+    }
+    std::ofstream file(filename,std::ios_base::binary);        
+    if (file.is_open()){
+        graphToBinaryFile(g,file);       
+    }
+    else{
+        throw CantWriteToFileException(filename);
+    }
 }

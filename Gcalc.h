@@ -36,7 +36,7 @@ class Gcalc{
     //void delete_op(const std::string& graph_name);
     void assignment_op(const std::string& graph_name,const Tokens& expressions);
     void print_op(const Tokens& expression) const;
-    void save_op(const std::string& expression);
+    void save_op(const Tokens& expression) const;
     void load_op(const std::string& expression);
 
 

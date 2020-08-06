@@ -1,5 +1,6 @@
 #include <stack>
 #include "calc_parser.h"
+#include "exceptions.h"
 
 bool validGraphName(const std::string& graph_name){
     std::regex reg ("[a-zA-Z]+[a-zA-Z0-9]*");
@@ -99,7 +100,7 @@ Tokens stringToTokens(const std::string& str){
 const std::string TokensToString(const Tokens& tokens){
     std::string res;
     for (auto it=tokens.begin(); it!=tokens.end(); it++){
-        res+=*it;
+        res+=" "+*it;
     }
     return res;
 }
@@ -191,4 +192,153 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     //shouldn't get here
     return false;
 }
+
+bool complexGraphExpression(const Tokens& expression, Graph& g){
+    
+    return false;
+    
+}
+
+bool validGraphLoad(const Tokens& expression,Graph& g){
+    if (expression[0]=="load" && expression[1]=="(" && expression[3]==")"){
+        std::ifstream file(expression[2],std::ios_base::binary);        
+        if (file.is_open()){
+            std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file),{});
+            g=binaryToGraph(buffer);
+            return true;
+        }
+        else{
+            throw FileDoesntExist(expression[2]);
+        }
+    }
+    else{
+        return false;
+    }
+}
+Graph binaryToGraph(std::vector<unsigned char>& file){
+    Graph res_graph;
+    size_t vector_size= file.size();
+    if (vector_size<8){
+        throw FileDataIsNotAGraph();
+    }
+    unsigned int num_vertices= file[3]<<24 | file[2]<<16 | file[1]<<8 | file[0];
+    unsigned int num_edges=file[7]<<24|file[6]<<18|file[5]<<8|file[4];
+    //a state machine to parse the binary into a graph
+    enum STATE{VERTEX_BEGIN,VERTEX_CHAR,EDGE_BEGIN1,EDGE_CHAR1,EDGE_BEGIN2,EDGE_CHAR2};
+    if (num_vertices==0 && num_edges==0 && vector_size==2){
+        return Graph();
+    }
+    Edges edges;
+    Vertices vertices;
+    std::string current_word="";
+    Edge current_edge;
+    unsigned int current_word_length;
+    STATE state=VERTEX_BEGIN;
+    for (auto it=file.begin()+8;it!=file.end();){
+        switch(state){
+            ////////////////////
+            case VERTEX_BEGIN:
+            if (file.end()-it<4){
+                throw FileDataIsNotAGraph();
+            }
+            current_word_length=*it++|*it++<<8|*it++<<16|*it++<<24;
+
+            //next state
+            state=VERTEX_CHAR;
+            
+            break;
+
+            ///////////////////
+            case VERTEX_CHAR:        
+            current_word+=*it;//add character
+            it++;
+            //next state
+            if (current_word.length()==current_word_length){
+                vertices.insert(current_word);
+                current_word="";                
+                if(vertices.size()==num_vertices){
+                    state=EDGE_BEGIN1;
+                }
+                else{
+                    state=VERTEX_BEGIN;
+                }
+            }          
+            else{
+                state=VERTEX_CHAR;
+            }
+            break;
+
+            /////////////////
+            case EDGE_BEGIN1:
+            //current_word_length=*it;
+            if (file.end()-it<4){
+                throw FileDataIsNotAGraph();
+            }
+            current_word_length=*it++|*it++<<8|*it++<<16|*it++<<24;
+            //next state
+            state=EDGE_CHAR1;
+            break;
+
+            /////////////////
+            case EDGE_CHAR1:
+            current_word+=*it;//add character
+            it++;
+            //next state
+            if (current_word.length()==current_word_length){
+                current_edge.first=current_word;
+                current_word="";                
+                state=EDGE_BEGIN2;
+            }          
+            else{
+                state=EDGE_CHAR1;
+            }
+            break;
+
+            /////////////////
+            case EDGE_BEGIN2:
+            //current_word_length=*it;
+            if (file.end()-it<4){
+                throw FileDataIsNotAGraph();
+            }
+            current_word_length=*it++|*it++<<8|*it++<<16|*it++<<24;
+            //next state
+            state=EDGE_CHAR2;
+
+            /////////////////
+            case EDGE_CHAR2:
+            current_word+=*it++;            
+            //next state
+            if (current_word.length()==current_word_length){
+                current_edge.second=current_word;
+                current_word="";                
+                edges.insert(current_edge);
+                state=EDGE_BEGIN1;
+            }          
+            else{
+                state=EDGE_CHAR2;
+            }
+            break;
+        }
+    }
+    if (vertices.size()==num_vertices && edges.size()==num_edges &&
+     legalVertices(vertices)&&check_graph_validity(vertices,edges)){
+         res_graph.setEdges(edges);        
+         res_graph.setVertices(vertices);
+         return res_graph;
+     }
+     else{
+         throw FileDataIsNotAGraph();
+     }
+}
+
+//can template this.. if you have time in the end
+bool legalVertices(const Vertices& vertices){
+    for (auto it=vertices.begin();it!=vertices.end();it++){
+        if (!validVertexName(*it)){
+            return false;
+        }                
+    }
+    return true;
+}
+
 

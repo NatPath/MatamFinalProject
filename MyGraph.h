@@ -7,6 +7,7 @@
 #include <set>
 #include <utility>
 #include <algorithm>
+#include <fstream>
 
 #include "my_utils.h"
 #include "exceptions.h"
@@ -34,6 +35,8 @@ class Graph {
 
     void setEdges(const Edges& new_edges);
     void setVertices(const Vertices& new_vertices);
+    const Vertices& getVertices() const;
+    const Edges& getEdges() const;
 
     //operators
     Graph& operator=(const Graph& b);//assignment
@@ -49,5 +52,6 @@ class Graph {
 };
 //maybe const??
 bool check_graph_validity(Vertices& vertices,Edges& edges);
+void graphToBinaryFile(const Graph& graph,std::ofstream& file);
 
 #endif
