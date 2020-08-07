@@ -245,3 +245,20 @@ void Graph::addVertex(const Vertex& v){
 void Graph::addEdge(const Edge& e){
     edges.insert(e);
 }
+Graph applyBinaryOp(const Graph& g1,const Graph& g2,std::string& operator_token){
+    if (operator_token=="+"){
+        return g1+g2;
+    }
+    if (operator_token=="^"){
+        return g1^g2;
+    }
+    if (operator_token=="-"){
+        return g1-g2;
+    }
+    if (operator_token=="*"){
+        return g1*g2;
+    }
+    //shouldnt get here
+    throw BinaryOperatorFault(operator_token);
+    return g1;
+}

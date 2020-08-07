@@ -29,7 +29,7 @@ Graph binaryToGraph(std::vector<unsigned char>& file);
 std::vector<unsigned char> graphToBinary(const Graph& graph);
 
 enum ParanthesesTypes {CURLY,SMOOTH};
-Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,bool* balanced=0);
+Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,Tokens::const_iterator& jt,bool* balanced=0);
 
 //trims even negs
 Tokens negTrim(const Tokens& expression);
@@ -40,6 +40,7 @@ Tokens negTrim(const Tokens& expression);
 Tokens isolateNeg(const Tokens& expression);
 
 bool isBinaryOp(std::string str);
+Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& it);
 
 
 

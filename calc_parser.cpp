@@ -119,9 +119,11 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     if (expression[0]=="{" && expression.back()=="}"){
         //corner cases of empty graph
         if (expression.size()==3 && expression[1]=="|"){
+            graph=Graph();
             return true;
         }
         if (expression.size()==2){
+            graph=Graph();
             return true;
         }
         //
@@ -206,7 +208,7 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     //shouldn't get here
     return false;
 }
-Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,bool* balanced){
+Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,Tokens::const_iterator& jt,bool* balanced){
     std::string closing_p;
     std::string opening_p;
     Tokens subexpression;
@@ -235,12 +237,14 @@ Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,bo
             if (balanced){
                 *balanced=true;
             }
+            jt=it+1;
             return subexpression;
         }
     }
     if (balanced){
         *balanced=false;
     }
+    jt=expression.end();
     return subexpression;
 }
 
@@ -407,7 +411,7 @@ Tokens negTrim(const Tokens& expression){
 bool isBinaryOp(std::string str){
     return str=="+" || str=="-" || str=="*" ||str=="^";
 }
-Tokens isolateNeg(const Tokens& expression){
+Tokens isolateNeg(const Tokens& expression,unsigned int& place){
     Tokens res;
     res.push_back("!");
     res.push_back("(");
@@ -425,6 +429,20 @@ Tokens isolateNeg(const Tokens& expression){
     if (look_for_binary_op){
         res.push_back(")");
     }
+    return res;
+}
+Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& ret_it ){
+    Tokens res;
+    for (auto it = expression.begin();it!=expression.end();it++){
+        if (isBinaryOp(*it)){
+            ret_it=it;
+            return res;
+        }
+        else{
+            res.push_back(*it);
+        }
+    }
+    ret_it=expression.end();
     return res;
 }
 

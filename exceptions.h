@@ -77,6 +77,11 @@ class FileDataIsNotAGraph: public ParserException{
     ParserException(" File data does not represent a valid graph"){};
 };
 
+class BinaryOperatorFault: public ParserException{
+    public:
+    BinaryOperatorFault(const std::string& bop):
+    ParserException("'"+bop+"'is NOT a binary operator"){};
+};
 
 
 #endif

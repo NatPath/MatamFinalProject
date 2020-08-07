@@ -41,7 +41,7 @@ class Gcalc{
     void load_op(const std::string& expression);
 
     bool complexGraphExpression(const Tokens& expression, Graph& g) const;
-    bool identifyFirstExpression(const Tokens& expression, Graph& g) const;
+    bool identifyFirstExpression(const Tokens& expression, Graph& g,Tokens::const_iterator& it) const;
 
 
 

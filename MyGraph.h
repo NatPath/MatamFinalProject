@@ -58,4 +58,6 @@ bool check_graph_validity(const Vertices& vertices,const Edges& edges);
 void graphToBinaryFile(const Graph& graph,std::ofstream& file);
 bool edgeValid(const Edge& edge,const Vertices& vertices);
 
+Graph applyBinaryOp(const Graph& g1,const Graph& g2,std::string& operator_token);
+
 #endif

@@ -221,70 +221,57 @@ void Gcalc::save_op(const Tokens& expression) const{
     }
 }
 
-bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g) const{
+bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::const_iterator& it) const{
     Tokens subexpression_temp;
-    Tokens subexpression_first;
-    Tokens subexpression_second;
+    Tokens first_expression;
     std::string operator_token;
-    Graph g1;
     if (expression.size()==0){
         return false;
     }
 
-    //negation is an opener
-    if (expression[0]=="!"){
-        Tokens after_neg_trim=negTrim(expression);
-        if (after_neg_trim[0]=="!"){
-            //adds "(" after ! and ")" before next binary operator;
-            after_neg_trim=isolateNeg(after_neg_trim);
-            subexpression_first=inRange(after_neg_trim,1,after_neg_trim.size());
-            g1=makeGraph(subexpression_first);
-        }
-        else{
-            g1=makeGraph(after_neg_trim);
-        }
-        g=!g1;
-        return true;
-    }
     //some kind of parantheses is opener
     bool balanced;
     if (expression[0]=="("){
-        subexpression_temp=findClosingParantheses(expression,SMOOTH,&balanced);        
+        subexpression_temp=findClosingParantheses(expression,SMOOTH,it,&balanced);        
         if (!balanced){
             return false;
         }
-        subexpression_first=inRange(subexpression_temp,1,subexpression_temp.size()-1);
-        g1=makeGraph(subexpression_first);
-    }
-    if (expression[0]=="{"){
-        subexpression_temp=findClosingParantheses(expression,CURLY,&balanced);        
-        subexpression_first=subexpression_temp;
-        if (!balanced){
-            return false;
-        }
-        if (!validGraphInitialization(subexpression_first,g1)){
-            throw IllegalAssignmentException(TokensToString(subexpression_first));
-        }          
-    }
-    //first expression is supposed to be regular
-    if (expression[0]!="{"&&expression[0]!="("){
-        subexpression_temp=inRange(expression,0,1);
-        g1=makeGraph(subexpression_temp);        
-    }
-
-    //subexpression with parantheses is all the expression
-    if (subexpression_temp.size()==expression.size()){
-        g=makeGraph(subexpression_first);
+        first_expression=inRange(subexpression_temp,1,subexpression_temp.size()-1);
+        g=makeGraph(first_expression);
         return true;
     }
 
-    operator_token=expression[subexpression_temp.size()];
-    if (!isBinaryOp(operator_token)){
-        return false;
+    if (expression[0]=="{"){
+        first_expression=findClosingParantheses(expression,CURLY,it,&balanced);        
+        if (!balanced){
+            return false;
+        }
+        if (!validGraphInitialization(first_expression,g)){
+            throw IllegalAssignmentException(TokensToString(first_expression));
+        }          
+        else{
+            
+            return true;
+        }
+    }
+    //negation is an opener
+    first_expression=findNextBinaryOperator(expression,it);
+    if (expression[0]=="!"){
+        Tokens after_neg_trim=negTrim(first_expression);
+        if (after_neg_trim[0]=="!"){
+            first_expression=inRange(after_neg_trim,1,after_neg_trim.size());
+            g=!makeGraph(first_expression);
+        }
+        else{
+            g=makeGraph(after_neg_trim);
+        }
+        return true;
     }
 
-    
-
+    //first expression is supposed to be regular
+    subexpression_temp=inRange(expression,0,1);
+    g=makeGraph(subexpression_temp);        
+    return true;
 }
 
 bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
@@ -295,87 +282,32 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
     std::string operator_token;
     Graph g1;
     Graph g2;
-    if (expression.size()==0){
+    Tokens future_expressions;
+
+    Tokens::const_iterator it= expression.begin();
+    if (!identifyFirstExpression(expression,g1,it)){
         return false;
     }
-    //negation is an opener
-    if (expression[0]=="!"){
-        Tokens after_neg_trim=negTrim(expression);
-        if (after_neg_trim[0]=="!"){
-            //adds "(" after ! and ")" before next binary operator;
-            after_neg_trim=isolateNeg(after_neg_trim);
-            subexpression_first=inRange(after_neg_trim,1,after_neg_trim.size());
-            g1=makeGraph(subexpression_first);
-        }
-        else{
-            g1=makeGraph(after_neg_trim);
-        }
-        g=!g1;
+    if (it==expression.end()){
+        g=g1;
         return true;
     }
-    //some kind of parantheses is opener
-    bool balanced;
-    if (expression[0]=="("){
-        subexpression_temp=findClosingParantheses(expression,SMOOTH,&balanced);        
-        if (!balanced){
+    operator_token=*it;
+    Tokens::const_iterator jt=it;
+    while (it!=expression.end()){
+        it++;
+        operator_token=*jt;
+        if (!isBinaryOp(operator_token)){
             return false;
         }
-        subexpression_first=inRange(subexpression_temp,1,subexpression_temp.size()-1);
-        g1=makeGraph(subexpression_first);
-    }
-    if (expression[0]=="{"){
-        subexpression_temp=findClosingParantheses(expression,CURLY,&balanced);        
-        subexpression_first=subexpression_temp;
-        if (!balanced){
+        future_expressions=inRange(expression,it-expression.begin(),expression.size());
+        jt=future_expressions.begin();
+        if (!identifyFirstExpression(future_expressions,g2,jt)){
             return false;
         }
-        if (!validGraphInitialization(subexpression_first,g1)){
-            throw IllegalAssignmentException(TokensToString(subexpression_first));
-        }          
+        it+=jt-future_expressions.begin();
+        g1=applyBinaryOp(g1,g2,operator_token);
     }
-    //first expression is supposed to be regular
-    if (expression[0]!="{"&&expression[0]!="("){
-        subexpression_temp=inRange(expression,0,1);
-        g1=makeGraph(subexpression_temp);        
-    }
-
-    //subexpression with parantheses is all the expression
-    if (subexpression_temp.size()==expression.size()){
-        g=makeGraph(subexpression_first);
-        return true;
-    }
-
-    operator_token=expression[subexpression_temp.size()];
-    if (!isBinaryOp(operator_token)){
-        return false;
-    }
-
-    //lookForNextExpression(inRange(expression,subexpression_temp.size(),expression.size()));
-
-    if (expression.size()-subexpression_temp.size()==1){
-        return false;//can't be only two tokens in a complex which is not '!'
-    }
-
-    // problem!!!
-    subexpression_second=inRange(expression,subexpression_temp.size()+1,expression.size());
-    g2=makeGraph(subexpression_second);
-
-    if (operator_token=="+"){
-        g=g1+g2;        
-        return true;
-    }
-    if (operator_token=="-"){
-        g=g1-g2;
-        return true;
-    }
-    if (operator_token=="*"){
-        g=g1*g2;
-        return true;
-    }
-    if (operator_token=="^"){
-        g=g1^g2;
-        return true;
-    }
-    return false;
-    
+    g=g1;
+    return true;
 }
