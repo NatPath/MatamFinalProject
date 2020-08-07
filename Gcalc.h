@@ -22,6 +22,7 @@ enum Command {ASSIGN_OP,
 class Gcalc{
     SymbolTable variables;
     Mode mode; 
+    bool quit_flag;
     public:
     Gcalc(Mode mode);
     void start();
@@ -38,6 +39,8 @@ class Gcalc{
     void print_op(const Tokens& expression) const;
     void save_op(const Tokens& expression) const;
     void load_op(const std::string& expression);
+
+    bool complexGraphExpression(const Tokens& expression, Graph& g) const;
 
 
 };

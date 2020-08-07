@@ -53,7 +53,8 @@ bool validEdgeName(const Tokens& edge_name){
          edge_name[4]==">"&&
          edge_name[2]==","&&
          validVertexName(edge_name[1])&&
-         validVertexName(edge_name[3]));
+         validVertexName(edge_name[3])&&
+         edge_name[1]!=edge_name[3]);
 }
 
 Tokens& filterTokensByRegex(Tokens& tokens,std::regex& reg){
@@ -85,7 +86,7 @@ std::string insertSpaces(const std::string& str,const std::string delim){
     return res;
 }
 Tokens stringToTokens(const std::string& str){
-    const std::string delims= "+*^!,<>(){}|=";
+    const std::string delims= "+-*^!,<>(){}|=";
     std::string str_spaces_inserted=insertSpaces(str,delims);
     std::stringstream ss(str_spaces_inserted);
     std::string tmp;
@@ -110,7 +111,18 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     Edges edges;
     Vertices vertices;
     std::set<std::string> passed_edgers;
+    if (expression.size()==0){
+        return false;
+    }
     if (expression[0]=="{" && expression.back()=="}"){
+        //corner cases of empty graph
+        if (expression.size()==3 && expression[1]=="|"){
+            return true;
+        }
+        if (expression.size()==2){
+            return true;
+        }
+        //
         //Tokens modified_expression=inRange(expression,1,expression.size()-1);
         //find '|'
         auto pipe = std::find(expression.begin(),expression.end()-1,"|");
@@ -192,14 +204,48 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     //shouldn't get here
     return false;
 }
+Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,bool* balanced){
+    std::string closing_p;
+    std::string opening_p;
+    Tokens subexpression;
+    switch (ptype){
+        case SMOOTH:
+        closing_p=")";
+        opening_p="(";
+        break;
+        case CURLY:
+        closing_p="}";
+        opening_p="{";
+        break;
+    }
+    subexpression.push_back(expression[0]);
+    int count=1;
 
-bool complexGraphExpression(const Tokens& expression, Graph& g){
-    
-    return false;
-    
+    for (auto it=expression.begin()+1;it!=expression.end();it++){
+        subexpression.push_back(*it);
+        if (*it == closing_p){
+            count--;
+        }        
+        if (*it == opening_p){
+            count++;
+        }
+        if (count==0){
+            if (balanced){
+                *balanced=true;
+            }
+            return subexpression;
+        }
+    }
+    if (balanced){
+        *balanced=false;
+    }
+    return subexpression;
 }
 
 bool validGraphLoad(const Tokens& expression,Graph& g){
+    if( expression.size()!=4){
+        return false;
+    }
     if (expression[0]=="load" && expression[1]=="(" && expression[3]==")"){
         std::ifstream file(expression[2],std::ios_base::binary);        
         if (file.is_open()){
@@ -340,5 +386,43 @@ bool legalVertices(const Vertices& vertices){
     }
     return true;
 }
+Tokens negTrim(const Tokens& expression){
+    unsigned int count=0;
+    for (auto it=expression.begin();it!=expression.end()&&*it=="!";it++){
+        count++;                
+    }
+    if (count==expression.size()){
+        throw IllegalGraphExpression(TokensToString(expression));
+    }
+    if (count%2==0){
+        return inRange(expression,count+1,expression.size());
+    }
+    else{
+        return inRange(expression,count-1,expression.size());
+    }
+}
 
+bool isBinaryOp(std::string str){
+    return str=="+" || str=="-" || str=="*" ||str=="^";
+}
+Tokens isolateNeg(const Tokens& expression){
+    Tokens res;
+    res.push_back("!");
+    res.push_back("(");
+    bool look_for_binary_op=true;
+    for (auto it = expression.begin()+1;it!=expression.end();it++){
+        if (look_for_binary_op && isBinaryOp(*it)){
+            res.push_back(")");
+            res.push_back(*it);        
+            look_for_binary_op=false;
+        }
+        else{
+            res.push_back(*it);
+        }
+    }
+    if (look_for_binary_op){
+        res.push_back(")");
+    }
+    return res;
+}
 

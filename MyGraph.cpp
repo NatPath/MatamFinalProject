@@ -6,6 +6,7 @@ bool check_graph_validity(Vertices vertices, Edges edges){
     
 }
 */
+////// non member functions
 bool check_graph_validity(Vertices& v,Edges& e){
     for(auto it =e.begin(); it!=e.end(); it++){
         if (!setContains(v,it->first)||!setContains(v,it->second)){
@@ -62,7 +63,7 @@ void graphToBinaryFile(const Graph& graph,std::ofstream& file){
         }
     }
 }
-
+/////// Graph methods:
 Graph::Graph(Vertices& vertices,Edges& edges){
     if(check_graph_validity(vertices,edges)){
         this->vertices=vertices;
@@ -140,6 +141,22 @@ Graph Graph::operator^(const Graph& b) const{
     );
     return Graph(new_vertices,new_edges);
 
+}
+
+Graph Graph::operator-(const Graph& b) const{
+    Vertices new_vertices;
+    Edges new_edges;
+    std::set_union(
+        b.vertices.begin(),b.vertices.end(),
+        vertices.begin(),vertices.end(),
+        std::inserter(new_vertices,new_vertices.begin())
+    );
+    std::set_union(
+        b.edges.begin(),b.edges.end(),
+        edges.begin(),edges.end(),
+        std::inserter(new_edges,new_edges.begin())
+    );
+    return Graph(new_vertices,new_edges);
 }
 //product
 Graph Graph::operator*(const Graph& b) const{

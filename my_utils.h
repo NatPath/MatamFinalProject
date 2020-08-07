@@ -30,6 +30,7 @@ template<class T,class S>
 bool operator==(std::pair<T,S> a,std::pair<T,S> b){
     return a.first==b.first&&a.second==b.second;
 }
-Tokens inRange(Tokens vec,int start,int end);
+
+Tokens inRange(const Tokens& vec,int start,int end);
 
 #endif

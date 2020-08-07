@@ -9,9 +9,10 @@ void print(const std::string& str){
         throw;
     }
 }
-Tokens inRange(Tokens vec,int start,int end){
+
+Tokens inRange(const Tokens& vec,int start,int end){
     Tokens res;    
-    if (int(vec.size())<=end||start<0||start>end){
+    if (int(vec.size())<end||start<0||start>end){
         throw OutOfRange();
     }
     for (int i=start;i<end;i++){

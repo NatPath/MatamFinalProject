@@ -28,6 +28,17 @@ bool legalEdges(const Edges& edges);
 Graph binaryToGraph(std::vector<unsigned char>& file);
 std::vector<unsigned char> graphToBinary(const Graph& graph);
 
+enum ParanthesesTypes {CURLY,SMOOTH};
+Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,bool* balanced=0);
+
+//trims even negs
+Tokens negTrim(const Tokens& expression);
+
+//Given an expression which starts with "!"
+//looks for last binary operator and puts ")" before it,
+// and a "(" after the "!";
+Tokens isolateNeg(const Tokens& expression);
+
 
 
 
