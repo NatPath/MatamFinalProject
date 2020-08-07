@@ -256,7 +256,9 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
         if (!balanced){
             return false;
         }
-        g1=makeGraph(subexpression_first);
+        if (!validGraphInitialization(subexpression_first,g1)){
+            throw IllegalAssignmentException(TokensToString(subexpression_first));
+        }          
     }
     //first expression is supposed to be regular
     if (expression[0]!="{"&&expression[0]!="("){
@@ -270,11 +272,11 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
         return true;
     }
 
-    operator_token=expression[subexpression_temp.size()+1];
+    operator_token=expression[subexpression_temp.size()];
     if (expression.size()-subexpression_temp.size()==1){
         return false;//can't be only two tokens in a complex which is not '!'
     }
-    subexpression_second=inRange(expression,subexpression_temp.size()+2,expression.size());
+    subexpression_second=inRange(expression,subexpression_temp.size()+1,expression.size());
     g2=makeGraph(subexpression_second);
 
     if (operator_token=="+"){

@@ -24,11 +24,10 @@ class Graph {
     std::set<Vertex> vertices;
     std::set<Edge> edges;
     
-    Graph full_graph();
     public:
     //constructors
     Graph()=default;
-    Graph(Vertices& vertices,Edges& edges);
+    Graph(const Vertices& vertices,const Edges& edges);
     Graph(std::string to_parse);
     Graph(const Graph& to_copy);//copy constructor
     ~Graph()=default;//destructor
@@ -51,7 +50,9 @@ class Graph {
     
 };
 //maybe const??
-bool check_graph_validity(Vertices& vertices,Edges& edges);
+Graph full_graph(const Vertices& v);
+bool check_graph_validity(const Vertices& vertices,const Edges& edges);
 void graphToBinaryFile(const Graph& graph,std::ofstream& file);
+bool edgeValid(const Edge& edge,const Vertices& vertices);
 
 #endif

@@ -7,13 +7,21 @@ bool check_graph_validity(Vertices vertices, Edges edges){
 }
 */
 ////// non member functions
-bool check_graph_validity(Vertices& v,Edges& e){
+bool check_graph_validity(const Vertices& v,const Edges& e){
     for(auto it =e.begin(); it!=e.end(); it++){
+        /*
         if (!setContains(v,it->first)||!setContains(v,it->second)){
             return false;
         }
+        */
+       if(!edgeValid(*it,v)){
+           return false;
+       }
     }
     return true;
+}
+bool edgeValid(const Edge& edge,const Vertices& vertices){
+    return setContains(vertices,edge.first)&&setContains(vertices,edge.second);
 }
 void graphToBinaryFile(const Graph& graph,std::ofstream& file){
 
@@ -63,8 +71,22 @@ void graphToBinaryFile(const Graph& graph,std::ofstream& file){
         }
     }
 }
+
+
+Graph full_graph(const Vertices& v){
+    Edges edges;
+    for (auto it=v.begin();it!=v.end();it++){
+        for (auto jt=v.begin();jt!=v.end();jt++){
+            if (*it!=*jt){
+                edges.insert(Edge(*it,*jt));
+            }
+        }
+    }
+    return Graph(v,edges);
+}
+
 /////// Graph methods:
-Graph::Graph(Vertices& vertices,Edges& edges){
+Graph::Graph(const Vertices& vertices,const Edges& edges){
     if(check_graph_validity(vertices,edges)){
         this->vertices=vertices;
         this->edges=edges;
@@ -131,10 +153,9 @@ Graph Graph::operator^(const Graph& b) const{
     std::set_intersection(
         b.vertices.begin(),b.vertices.end(),
         vertices.begin(),vertices.end(),
-//        std::back_inserter(new_vertices)
         std::inserter(new_vertices,new_vertices.begin())
     );
-    std::set_union(
+    std::set_intersection(
         b.edges.begin(),b.edges.end(),
         edges.begin(),edges.end(),
         std::inserter(new_edges,new_edges.begin())
@@ -146,26 +167,55 @@ Graph Graph::operator^(const Graph& b) const{
 Graph Graph::operator-(const Graph& b) const{
     Vertices new_vertices;
     Edges new_edges;
-    std::set_union(
-        b.vertices.begin(),b.vertices.end(),
+    std::set_difference(
         vertices.begin(),vertices.end(),
+        b.vertices.begin(),b.vertices.end(),
         std::inserter(new_vertices,new_vertices.begin())
     );
-    std::set_union(
-        b.edges.begin(),b.edges.end(),
-        edges.begin(),edges.end(),
-        std::inserter(new_edges,new_edges.begin())
-    );
+    for (auto it=edges.begin();it!=edges.end();it++){
+        if (edgeValid(*it,new_vertices)){
+            new_edges.insert(*it);
+        }
+    }
     return Graph(new_vertices,new_edges);
+}
+
+Vertex constructProductVertex(const Vertex& a,const Vertex& b){
+    Vertex new_vertex= "["+a+";"+b+"]";
+    return new_vertex;
+}
+
+Edge constructProductEdge(const Edge& a,const Edge& b){
+    Edge new_edge;    
+    new_edge.first=constructProductVertex(a.first,b.first);
+    new_edge.second=constructProductVertex(a.second,b.second);
+    return new_edge;
 }
 //product
 Graph Graph::operator*(const Graph& b) const{
-    return b;
-
+    Vertices new_vertices;
+    Edges new_edges;
+    for (auto it=vertices.begin();it!=vertices.end();it++){
+        for (auto jt=b.vertices.begin();jt!=b.vertices.end();jt++){
+            new_vertices.insert(constructProductVertex(*it,*jt));
+        }
+    }
+    for (auto it=edges.begin();it!=edges.end();it++){
+        for (auto jt=b.edges.begin();jt!=b.edges.end();jt++){
+            new_edges.insert(constructProductEdge(*it,*jt));            
+        }
+    }
+    return Graph(new_vertices,new_edges);
 }
+
 //complement
 Graph Graph::operator!() const{
-    return *this;
+    Graph full=full_graph(vertices);
+    Edges full_edges=full.edges;
+    for (auto it=edges.begin();it!=edges.end();it++){
+        full_edges.erase(*it);
+    }
+    return Graph(vertices,full_edges);
 }
 
 void printEdge(Edge edge){

@@ -23,7 +23,7 @@ void print(T str){
     std::cout<<str<<std::endl;
 }
 template<class T>
-bool setContains(std::set<T>& s,T elem){
+bool setContains(const std::set<T>& s,const T& elem){
     return s.find(elem)!=s.end();
 }
 template<class T,class S>

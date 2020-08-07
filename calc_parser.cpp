@@ -17,12 +17,14 @@ bool validVertexName(const std::string& vertex_name){
     if (!contains_only){
         //std::cout<<"Contains an illegal Character"<<std::endl;
         //print("contains illegal character");
-        throw ParserException("Vertex name Contains an illegal Character");
+        return false;
+        //throw ParserException("Vertex name Contains an illegal Character");
     }
     bool parenthesesBalanced=checkParenthesesBalance(vertex_name);
     //std::regex semicol_in_the_middle_reg ("([^;]*(\\[[^\\]]*\\])*[^;]*)*");
     if (!parenthesesBalanced){
-        throw ParserException("Vertex name's Parentheses rules are not met (might be regarding semicolumn)");
+        return false;
+        //throw ParserException("Vertex name's Parentheses rules are not met (might be regarding semicolumn)");
     }
 
     return contains_only&&parenthesesBalanced;
@@ -395,7 +397,7 @@ Tokens negTrim(const Tokens& expression){
         throw IllegalGraphExpression(TokensToString(expression));
     }
     if (count%2==0){
-        return inRange(expression,count+1,expression.size());
+        return inRange(expression,count,expression.size());
     }
     else{
         return inRange(expression,count-1,expression.size());
