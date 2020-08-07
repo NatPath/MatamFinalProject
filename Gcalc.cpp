@@ -2,13 +2,20 @@
 #include "Gcalc.h"
 #include "calc_parser.h"
 
+bool getlineWrap(std::string& command){
+    std::cout<<"Gcalc> ";
+    if(std::getline(std::cin,command)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 Gcalc::Gcalc(Mode mode):mode(mode),quit_flag(false){}
 void Gcalc::start(){
     std::string command;
     if (mode==menual){
-        while(true){
-            std::cout<<"Gcalc> ";
-            std::getline(std::cin,command);
+        while(getlineWrap(command)){
             try{
                 parse_command(command);
                 if (quit_flag){
@@ -22,9 +29,9 @@ void Gcalc::start(){
     }
     else{
         while(std::getline(std::cin,command)){
-            std::string command_filtered = command.substr(0,command.size()-1);
+            //std::string command_filtered = command.substr(0,command.size()-1);
             try{
-                parse_command(command_filtered);
+                parse_command(command);
                 if (quit_flag){
                     break;
                 }
@@ -214,18 +221,17 @@ void Gcalc::save_op(const Tokens& expression) const{
     }
 }
 
-bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
-    //expression starts with parantheses
+bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g) const{
     Tokens subexpression_temp;
     Tokens subexpression_first;
     Tokens subexpression_second;
     std::string operator_token;
     Graph g1;
-    Graph g2;
-    //negation is an opener
     if (expression.size()==0){
         return false;
     }
+
+    //negation is an opener
     if (expression[0]=="!"){
         Tokens after_neg_trim=negTrim(expression);
         if (after_neg_trim[0]=="!"){
@@ -273,9 +279,84 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
     }
 
     operator_token=expression[subexpression_temp.size()];
+    if (!isBinaryOp(operator_token)){
+        return false;
+    }
+
+    
+
+}
+
+bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
+    //expression starts with parantheses
+    Tokens subexpression_temp;
+    Tokens subexpression_first;
+    Tokens subexpression_second;
+    std::string operator_token;
+    Graph g1;
+    Graph g2;
+    if (expression.size()==0){
+        return false;
+    }
+    //negation is an opener
+    if (expression[0]=="!"){
+        Tokens after_neg_trim=negTrim(expression);
+        if (after_neg_trim[0]=="!"){
+            //adds "(" after ! and ")" before next binary operator;
+            after_neg_trim=isolateNeg(after_neg_trim);
+            subexpression_first=inRange(after_neg_trim,1,after_neg_trim.size());
+            g1=makeGraph(subexpression_first);
+        }
+        else{
+            g1=makeGraph(after_neg_trim);
+        }
+        g=!g1;
+        return true;
+    }
+    //some kind of parantheses is opener
+    bool balanced;
+    if (expression[0]=="("){
+        subexpression_temp=findClosingParantheses(expression,SMOOTH,&balanced);        
+        if (!balanced){
+            return false;
+        }
+        subexpression_first=inRange(subexpression_temp,1,subexpression_temp.size()-1);
+        g1=makeGraph(subexpression_first);
+    }
+    if (expression[0]=="{"){
+        subexpression_temp=findClosingParantheses(expression,CURLY,&balanced);        
+        subexpression_first=subexpression_temp;
+        if (!balanced){
+            return false;
+        }
+        if (!validGraphInitialization(subexpression_first,g1)){
+            throw IllegalAssignmentException(TokensToString(subexpression_first));
+        }          
+    }
+    //first expression is supposed to be regular
+    if (expression[0]!="{"&&expression[0]!="("){
+        subexpression_temp=inRange(expression,0,1);
+        g1=makeGraph(subexpression_temp);        
+    }
+
+    //subexpression with parantheses is all the expression
+    if (subexpression_temp.size()==expression.size()){
+        g=makeGraph(subexpression_first);
+        return true;
+    }
+
+    operator_token=expression[subexpression_temp.size()];
+    if (!isBinaryOp(operator_token)){
+        return false;
+    }
+
+    //lookForNextExpression(inRange(expression,subexpression_temp.size(),expression.size()));
+
     if (expression.size()-subexpression_temp.size()==1){
         return false;//can't be only two tokens in a complex which is not '!'
     }
+
+    // problem!!!
     subexpression_second=inRange(expression,subexpression_temp.size()+1,expression.size());
     g2=makeGraph(subexpression_second);
 

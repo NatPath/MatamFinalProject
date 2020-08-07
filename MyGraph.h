@@ -47,6 +47,9 @@ class Graph {
     bool operator==(const Graph& b) const;
     bool operator!=(const Graph& b) const;
     void printGraph() const;
+    //for python
+    void addVertex(const Vertex& v);
+    void addEdge(const Edge& e);
     
 };
 //maybe const??

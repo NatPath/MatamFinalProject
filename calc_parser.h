@@ -39,6 +39,8 @@ Tokens negTrim(const Tokens& expression);
 // and a "(" after the "!";
 Tokens isolateNeg(const Tokens& expression);
 
+bool isBinaryOp(std::string str);
+
 
 
 

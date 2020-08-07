@@ -237,3 +237,11 @@ const Vertices& Graph::getVertices() const{
 const Edges& Graph::getEdges() const{
     return edges;
 }
+
+
+void Graph::addVertex(const Vertex& v){
+    vertices.insert(v);
+}
+void Graph::addEdge(const Edge& e){
+    edges.insert(e);
+}
