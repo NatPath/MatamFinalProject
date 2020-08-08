@@ -6,11 +6,12 @@
     "configurations": [
         
         
+        
         {
-            "name": "g++ - Build and debug active file",
+            "name": "run manual",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "${workspaceFolder}/gcalc",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -24,8 +25,27 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "build active file",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "preLaunchTask": "test"
+        },
+        {
+            "name": "run batch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/gcalc",
+            "args": ["Tests/2.2\\&2.5/t3in.txt","output.txt"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "test"
         }
     ]
 }
