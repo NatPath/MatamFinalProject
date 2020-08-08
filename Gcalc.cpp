@@ -255,13 +255,13 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         }
     }
     //negation is an opener
-    first_expression=findNextBinaryOperator(expression,it);
     Tokens::const_iterator dummy_it=first_expression.begin();
-    //int count_steps=0;//to determine how to increment the iterator
     if (expression[0]=="!"){
-        Tokens after_neg_trim=negTrim(first_expression);
+        Tokens after_neg_trim=negTrim(expression);
+        it+=expression.size()-after_neg_trim.size();
                 
         if (after_neg_trim[0]=="!"){
+            it++;
             first_expression=inRange(after_neg_trim,1,after_neg_trim.size());
             dummy_it=first_expression.begin();
             identifyFirstExpression(first_expression,g,dummy_it);
@@ -273,9 +273,11 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
             identifyFirstExpression(first_expression,g,dummy_it);
             g=g;
         }
+        it+=dummy_it-first_expression.begin();
         return true;
     }
     if(expression[0]=="load"){
+        first_expression=findNextBinaryOperator(expression,it);
         if (validGraphLoad(first_expression,g)){
             return true;
         }

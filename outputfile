@@ -11,18 +11,19 @@ simple as
 you can
 $
 Error: Illegal Assignment Expression:  { this , is , , supposed , to , be , an , error | a }
-as
-can
-pass
-simple
-something
-this
-you
 $
-as this
-simple as
-you can
-Error: Illegal Graph Expression:  ! ( SIMPLE * SIMPLE * SIMPLE + ( { please , pass } + { i , beg , please | < i , beg > , < beg , please > } ) )
-Error: Undefined variable: SAVE
-Error: Illegal Graph Expression:  ! ( SIMPLE * SIMPLE )
-Error: Undefined variable: G1
+$
+a
+b
+c
+f
+g
+k
+$
+b k
+k b
+A
+B
+$
+A B
+B A
