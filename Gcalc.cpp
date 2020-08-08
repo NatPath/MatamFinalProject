@@ -256,8 +256,10 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
     }
     //negation is an opener
     first_expression=findNextBinaryOperator(expression,it);
+    //int count_steps=0;//to determine how to increment the iterator
     if (expression[0]=="!"){
         Tokens after_neg_trim=negTrim(first_expression);
+                
         if (after_neg_trim[0]=="!"){
             first_expression=inRange(after_neg_trim,1,after_neg_trim.size());
             g=!makeGraph(first_expression);
@@ -265,11 +267,13 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         else{
             g=makeGraph(after_neg_trim);
         }
+
         return true;
     }
 
     //first expression is supposed to be regular
     subexpression_temp=inRange(expression,0,1);
+    it=expression.begin()+1;
     g=makeGraph(subexpression_temp);        
     return true;
 }
@@ -289,7 +293,6 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
         return false;
     }
     if (it==expression.end()){
-        g=g1;
         return true;
     }
     operator_token=*it;
