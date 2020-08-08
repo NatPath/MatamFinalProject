@@ -50,6 +50,7 @@ class Graph {
     //for python
     void addVertex(const Vertex& v);
     void addEdge(const Edge& e);
+    void addEdge(const Vertex& v1, const Vertex& v2);
     
 };
 //maybe const??

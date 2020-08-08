@@ -1,5 +1,5 @@
 SIMPLE={can,you,pass,something,simple,as,this|<you,can>,<simple,as>,<as,this>}
-print(SIMPLE)
+iprint(SIMPLE)
 print(!SIMPLE+!!SIMPLE-SIMPLE)
 SIMPLE={this,is,   ,supposed,to,be,an,error|a}
 G1=!!SIMPLE*SIMPLE-SIMPLE+(SIMPLE+SIMPLE-SIMPLE)-SIMPLE+{}+(!{a,b}*{k})+{f}*{}
@@ -7,4 +7,40 @@ print(G1)
 G1=!!SIMPLE*SIMPLE-SIMPLE+((SIMPLE+SIMPLE-SIMPLE)-SIMPLE+{})+(!{a,b}*{k})+{f}*{}
 print(G1)
 print(((((({a}+{b}+{c})+{f}+{g}+(!{k,b}))))))
-print(!(!(!(!(!(!!({A,B})))))))
+save({saveMe  , Please,  I,D0nt,W4nt,T0,Fa1l|<saveMe  , Please >},  output_1.gf  )
+print(!(!(!(!(!(!!({A,B})+load(output_1.gf)))))))
+G2=G1+!G1*{n0,m4tt3r,h0w,l0ng|<n0,m4773r>,<h0w,l0ng>}+{or,c0mpl3x}*{}+{an,expression,is}^({it,just,wont,compile|<a,b>}+{if,the,is,a,fault,in,the,middle})*{}*{}
+G3=G1+{a,b}*!!!{}+!!!!!G2
+G2={Always,Look,On,The,Bright,Side,Of,Life|}+({todo,todoo,todooo,toodo}*({}+!!!!!!{The,Semester,Is,Finally,Over|< Semester,Is>,<Is,Semester>,<Over,Finally>})+{XDLOL})
+print(G2)
+save(G2+!{This,Is,Getting,Ridiculus}^{a,b},output_1)
+G3=load(output_*1)
+G3=load(output_1)
+print(G3)
+who
+delete(G#)
+delete(G 3)
+delete(     G3 )
+who3
+who={a}
+re set     ={}
+reset
+quit       , 
+reset1=  { reset,quit| <reset,quit> }
+reset1=  { reset,quit| <reset,quit>, <reset,quit> }
+print(reset1)
+prettyGraph  = reset1 +{print,save,quit,reset,launch,deport,tea,table,spoon  }^{}+!!reset1-reset1
+Gcalc=prettyGraph*(prettyGraph+{b,bb})*(((((!!{})+{}))))+!!!{a,b}
+GCalc={}+(Gcalc+Gcalc+{})
+reset
+who
+Gcalc=GCalc
+loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<c,a>})
+loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<a,c>})
+save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )+
+save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )
+save(loadRoar,output_1)
+KingHaim={This,is,my,  Pokem0n|  }+ (({}+  (   {}) ^ {a,b,c})load  (  output_1  )+load (output_1) +load(  output_2.gf   ))
+KingHaim={This,is,my,  Pokem0n|  }+ (({}+  (   {}) ^ {a,b,c})+load  (  output_1  )+load (output_1) +load(  output_2.gf   ))
+print(KingHaim)
+print(loadRoar)

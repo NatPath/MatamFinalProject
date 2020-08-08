@@ -245,6 +245,10 @@ void Graph::addVertex(const Vertex& v){
 void Graph::addEdge(const Edge& e){
     edges.insert(e);
 }
+void Graph::addEdge(const Vertex& v1, const Vertex& v2){
+    Edge e(v1,v2);
+    edges.insert(e);
+}
 Graph applyBinaryOp(const Graph& g1,const Graph& g2,std::string& operator_token){
     if (operator_token=="+"){
         return g1+g2;

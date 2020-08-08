@@ -1,0 +1,15 @@
+import graph as gw
+
+g1=gw.create()
+gw.disp(g1)
+g1=gw.addVertex(g1,'a')
+g1=gw.addVertex(g1,'b')
+gw.disp(gw.addEdge(g1,'a','b'))
+gw.disp(gw.addEdge(g1,'a','c'))
+g2=gw.create()
+g2=gw.addVertex(g2,'c')
+gw.disp(gw.graphUnion(g1,g2,g1))
+gw.disp(g1)
+gw.destroy(g2)
+gw.destroy(g1)
+

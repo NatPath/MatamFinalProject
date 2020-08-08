@@ -1,0 +1,3 @@
+make libgraph.a |
+swig -python -o graph_wrap.c graph.i |
+g++ -DNDEBUG --pedantic-errors -std=c++11 -Wall -Werror -I/usr/local/include/python3.6m -fPIC -shared graph_wrap.c libgraph.a -o _graph.so

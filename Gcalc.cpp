@@ -277,8 +277,9 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         return true;
     }
     if(expression[0]=="load"){
-        first_expression=findNextBinaryOperator(expression,it);
+        first_expression=findNextBinaryOperator(expression,dummy_it);
         if (validGraphLoad(first_expression,g)){
+            it+=4;
             return true;
         }
         else{
