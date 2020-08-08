@@ -1,11 +1,11 @@
-CC=/usr/local/bin/gcc
-CCX=/usr/local/bin/g++
-#CC=gcc
-#CCX=g++
+#CC=/usr/local/bin/gcc
+#CCX=/usr/local/bin/g++
+CC=gcc
+CCX=g++
 
 EXEC=gcalc
 DEBUG_FLAG=-g
-COMP_FLAG=-std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -c
+COMP_FLAG=-std=c++11 -DNDEBUG -fPIC --pedantic-errors -Wall -Werror -c
 OBJS_FOR_PYTHON=calc_parser.o my_utils.o MyGraph.o 
 OBJS_REMAINED=Gcalc.o main.o
 OBJS=$(OBJS_FOR_PYTHON) $(OBJS_REMAINED)

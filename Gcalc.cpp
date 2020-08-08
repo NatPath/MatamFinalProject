@@ -262,7 +262,7 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
                 
         if (after_neg_trim[0]=="!"){
             first_expression=inRange(after_neg_trim,1,after_neg_trim.size());
-            g=!makeGraph(first_expression);
+            g=!(makeGraph(first_expression));
         }
         else{
             g=makeGraph(after_neg_trim);
@@ -301,6 +301,7 @@ bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g) const{
         return false;
     }
     if (it==expression.end()){
+        g=g1;
         return true;
     }
     operator_token=*it;
