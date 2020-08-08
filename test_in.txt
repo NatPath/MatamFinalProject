@@ -1,0 +1,9 @@
+SIMPLE={can,you,pass,something,simple,as,this|<you,can>,<simple,as>,<as,this>}
+print(SIMPLE)
+print(!SIMPLE+!!SIMPLE-SIMPLE)
+SIMPLE={this,is,   ,supposed,to,be,an,error|a}
+print(SIMPLE)
+SAVE=!(SIMPLE*SIMPLE*  SIMPLE+({please,pass}+{i,beg,please|<i,beg>,<  beg,please>} ))
+save(!!SAVE-SAVE+(!SAVE-SAVE)+({bleep}*{}+SAVE),gcalc_output)
+G1=!(SIMPLE*SIMPLE)
+print(G1)
