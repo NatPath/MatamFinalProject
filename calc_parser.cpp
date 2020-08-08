@@ -445,4 +445,3 @@ Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& r
     ret_it=expression.end();
     return res;
 }
-

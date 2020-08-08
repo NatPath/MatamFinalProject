@@ -287,7 +287,7 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         }
     }
 
-    //first expression is supposed to be regular
+    //first expression is supposed to be a single token
     subexpression_temp=inRange(expression,0,1);
     it=expression.begin()+1;
     g=makeGraph(subexpression_temp);        

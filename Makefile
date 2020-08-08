@@ -12,7 +12,7 @@ OBJS=$(OBJS_FOR_PYTHON) $(OBJS_REMAINED)
 
 EXCEPTIONS_FILES=exceptions.h
 MY_UTILS_FILES=my_utils.cpp my_utils.h
-GCALC_FILES=gcalc.cpp gcalc.h
+GCALC_FILES=Gcalc.cpp Gcalc.h
 PARSER_FILES=calc_parser.cpp calc_parser.h
 MYGRAPH_FILES=MyGraph.cpp MyGraph.h
 MAIN_FILE=main.cpp

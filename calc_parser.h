@@ -41,6 +41,9 @@ Tokens isolateNeg(const Tokens& expression);
 
 bool isBinaryOp(std::string str);
 Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& it);
+//bool identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::const_iterator& it);
+//bool Gcalc::complexGraphExpression(const Tokens& expression, Graph& g);
+
 
 
 
