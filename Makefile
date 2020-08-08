@@ -1,7 +1,7 @@
-#CC=/usr/local/bin/gcc
-#CCX=/usr/local/bin/g++
-CC=gcc
-CCX=g++
+CC=/usr/local/bin/gcc
+CCX=/usr/local/bin/g++
+#CC=gcc
+#CCX=g++
 
 EXEC=gcalc
 DEBUG_FLAG=-g

@@ -270,6 +270,14 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
 
         return true;
     }
+    if(expression[0]=="load"){
+        if (validGraphLoad(first_expression,g)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     //first expression is supposed to be regular
     subexpression_temp=inRange(expression,0,1);
