@@ -37,6 +37,7 @@ who
 Gcalc=GCalc
 loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<c,a>})
 loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<a,c>})
+print({printingLoadRoar}+loadRoar)
 save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )+
 save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )
 save(loadRoar,output_1)

@@ -57,6 +57,8 @@ std::string insertCharByDelim(const std::string& str,const std::string delim,cha
 
 Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens);
 
+Tokens::const_iterator lastSemiColumn(const Tokens& save_expression);
+
 
 
 

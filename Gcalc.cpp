@@ -120,6 +120,9 @@ void Gcalc::parse_command(const std::string& command){
     throw UnrecognizedCommandException(command);
 }
 Graph Gcalc::makeGraph(const Tokens& graph_expression) const{
+    if (graph_expression.size()==0){
+        throw IllegalGraphExpression("'Empty Graph");
+    }
     //regular assignment
     if (graph_expression.size()==1 ){
         if(validVertexName(graph_expression[0])){
@@ -139,7 +142,7 @@ Graph Gcalc::makeGraph(const Tokens& graph_expression) const{
         return g;
     }
     //check load(G)
-    if(validGraphLoad(graph_expression,g)){
+    if(graph_expression[0]=="load"&&validGraphLoad(graph_expression,g)){
         return g;
     }
 
@@ -177,6 +180,29 @@ void Gcalc::print_op(const Tokens& expressions)const{
 }
 void Gcalc::save_op(const Tokens& expression) const{
     Graph g;
+    Tokens::const_iterator it=lastSemiColumn(expression);
+
+    if (it==expression.begin()){
+        throw IllegalSaveExpression(TokensToString(expression));
+    }
+    std::string filename = TokensToString(Tokens(it+1,expression.end()));
+    if (filename==""){
+        throw CantWriteToFileException("EmptyFileName");
+    }
+    Tokens graph_expression=Tokens(expression.begin(),it);
+    g=makeGraph(graph_expression);
+    std::ofstream file(filename,std::ios_base::binary);        
+    if (file.is_open()){
+        graphToBinaryFile(g,file);       
+    }
+    else{
+        throw CantWriteToFileException(filename);
+    }
+}
+// OLD BUT GOLD
+/*
+void Gcalc::save_op(const Tokens& expression) const{
+    Graph g;
     std::string filename = expression[expression.size()-1];
     if (expression[expression.size()-2]!=","){
         throw IllegalSaveExpression(TokensToString(expression));
@@ -193,6 +219,7 @@ void Gcalc::save_op(const Tokens& expression) const{
         throw CantWriteToFileException(filename);
     }
 }
+*/
 
 //in Gcalc only because it uses makeGraph.. should have done better designing
 bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::const_iterator& it) const{
@@ -228,7 +255,7 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         }
     }
     //negation is an opener
-    Tokens::const_iterator dummy_it=first_expression.begin();
+    Tokens::const_iterator dummy_it=expression.begin();
     if (expression[0]=="!"){
         Tokens after_neg_trim=negTrim(expression);
         it+=expression.size()-after_neg_trim.size();
@@ -250,10 +277,20 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
         return true;
     }
     if(expression[0]=="load"){
-        first_expression=findNextBinaryOperator(expression,dummy_it);
-        if (validGraphLoad(first_expression,g)){
-            it+=4;
-            return true;
+        if(expression.size()>=1){
+            Tokens future_expression(expression.begin()+1,expression.end());
+            dummy_it=future_expression.begin();
+            first_expression=findClosingParantheses(future_expression,SMOOTH,dummy_it);
+            int parantheses_length=dummy_it-future_expression.begin();
+            first_expression=Tokens(expression.begin(),expression.begin()+parantheses_length+1);
+            //first_expression=findNextBinaryOperator(expression,dummy_it);
+            if (validGraphLoad(first_expression,g)){
+                it+=first_expression.size();
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;

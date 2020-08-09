@@ -116,7 +116,7 @@ Tokens stringToTokens(const std::string& str){
 const std::string TokensToString(const Tokens& tokens){
     std::string res;
     for (auto it=tokens.begin(); it!=tokens.end(); it++){
-        res+=" "+*it;
+        res+=*it;
     }
     return res;
 }
@@ -262,6 +262,30 @@ Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,To
 }
 
 bool validGraphLoad(const Tokens& expression,Graph& g){
+    if(expression.size()<=3){
+        return false;
+    }
+    if (expression[0]=="load" && expression[1]=="(" && *(expression.end()-1)==")"){
+        std::string filename=TokensToString(Tokens(expression.begin()+2,expression.end()-1));      
+        if (filename.find('(')!=std::string::npos||filename.find(')')!=std::string::npos||filename.find(',')!=std::string::npos){
+            throw FileDoesntExist(filename);
+        }
+        std::ifstream file(filename,std::ios_base::binary);        
+        if (file.is_open()){
+            std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file),{});
+            g=binaryToGraph(buffer);
+            return true;
+        }
+        else{
+            throw FileDoesntExist(filename);
+        }
+    }
+    else{
+        return false;
+    }
+}
+/*
+bool validGraphLoad(const Tokens& expression,Graph& g){
     if( expression.size()!=4){
         return false;
     }
@@ -280,6 +304,7 @@ bool validGraphLoad(const Tokens& expression,Graph& g){
         return false;
     }
 }
+*/
 Graph binaryToGraph(std::vector<unsigned char>& file){
     Graph res_graph;
     size_t vector_size= file.size();
@@ -501,6 +526,18 @@ Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens){
         }
     }
     return res;    
+}
+
+Tokens::const_iterator lastSemiColumn(const Tokens& save_expression){
+    if( save_expression.size()==0){
+        throw ParserException("save expression is empty");
+    }
+    for (auto it =save_expression.end()-1;it!=save_expression.begin();it--){
+        if (*it==","){
+            return it;
+        }
+    }            
+    return save_expression.begin();
 }
 
 /////////////////////////////////////////////////

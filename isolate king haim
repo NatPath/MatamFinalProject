@@ -1,0 +1,5 @@
+save({saveMe  , Please,  I,D0nt,W4nt,T0,Fa1l|<saveMe  , Please >},  output_1.gf  )
+print(!(!(!(!(!(!!({A,B})+load(output_1.gf)))))))
+loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<a,c>})
+save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )
+print(KingHaim)
