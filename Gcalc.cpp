@@ -22,8 +22,11 @@ void Gcalc::start(){
                     break;
                 }
             }
-            catch(std::exception& e){
+            catch(ParserException& e){
                 print(e.what());
+            }
+            catch(std::exception& e){
+                std::cout<<"Error: "<<e.what()<<std::endl;
             }
         }
     }
@@ -79,8 +82,6 @@ void Gcalc::parse_command(const std::string& command){
         else{
             throw UnrecognizedCommandException(command);
         }
-
-
     }
     //try delete
     if(tokens[0]=="delete"){
@@ -89,14 +90,12 @@ void Gcalc::parse_command(const std::string& command){
                 return;
             }
             else{
-                //doesn't really check if its even a variable.. but its just not something to delete
+                //doesn't really check if its even a variable.. but its just not something to delete so its a fitting exception either way
                 throw UndefinedVariableException(tokens[2]);
-                return;
             }
         }
         else{
             throw UnrecognizedCommandException(command);
-            return;
         }
     }
 
@@ -114,20 +113,9 @@ void Gcalc::parse_command(const std::string& command){
     //try assignment
     if(validGraphName(tokens[0]) && tokens[1]=="=" && tokens.size()>=3){
         Tokens assign_expressions(tokens.begin()+2,tokens.end());
-        try{
-            assignment_op(tokens[0],assign_expressions);            
-            return;
-        }
-        catch(ParserException& e){
-            print(e.what());
-            return;
-        }
-        catch(std::exception& e){
-            std::cout<<"Error: "<<e.what()<<std::endl;
-            return;
-        }
+        assignment_op(tokens[0],assign_expressions);            
+        return;
     }
-    //try save 
 
     throw UnrecognizedCommandException(command);
 }
@@ -166,12 +154,7 @@ Graph Gcalc::makeGraph(const Tokens& graph_expression) const{
 
 void Gcalc::assignment_op(const std::string& graph_name,const Tokens& graph_expression){
     Graph g;
-    try{
-        g = makeGraph(graph_expression);
-    }
-    catch(...){
-        throw;
-    }
+    g = makeGraph(graph_expression);
     variables[graph_name]=g;
 }
 void Gcalc::who() const{
@@ -181,7 +164,6 @@ void Gcalc::who() const{
 }
 void Gcalc::quit(){
     quit_flag=true;
-    //exit(1);
 }
 void Gcalc::reset(){
     variables=SymbolTable();
@@ -190,13 +172,7 @@ void Gcalc::reset(){
 //see if what's inside the parantheses is legal expression and print it if so
 void Gcalc::print_op(const Tokens& expressions)const{
     Graph g;
-    try{
-        g=makeGraph(expressions);
-    }
-    catch(std::exception& e){
-        print(e.what());
-        return;
-    }
+    g=makeGraph(expressions);
     g.printGraph();
 }
 void Gcalc::save_op(const Tokens& expression) const{
@@ -206,12 +182,9 @@ void Gcalc::save_op(const Tokens& expression) const{
         throw IllegalSaveExpression(TokensToString(expression));
     }
     Tokens graph_expression=inRange(expression,0,expression.size()-2);
-    try{
-        g=makeGraph(graph_expression);
-    }
-    catch(...){
-        throw;
-    }
+
+    g=makeGraph(graph_expression);
+
     std::ofstream file(filename,std::ios_base::binary);        
     if (file.is_open()){
         graphToBinaryFile(g,file);       
@@ -221,6 +194,7 @@ void Gcalc::save_op(const Tokens& expression) const{
     }
 }
 
+//in Gcalc only because it uses makeGraph.. should have done better designing
 bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::const_iterator& it) const{
     Tokens subexpression_temp;
     Tokens first_expression;
@@ -250,7 +224,6 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
             throw IllegalAssignmentException(TokensToString(first_expression));
         }          
         else{
-            
             return true;
         }
     }

@@ -74,7 +74,6 @@ Tokens& filterTokensByRegex(Tokens& tokens,std::regex& reg){
 //each spot there is a delim in the original string, put spaces around it
 std::string insertSpaces(const std::string& str,const std::string delim){
     std::string res;
-    //const std::string delims= "+*,<>(){}|";
     for(auto it=str.begin();it!=str.end();it++){
         //if character is in delim, push it with spaces around it
         if (delim.find(*it)!=std::string::npos){
@@ -445,3 +444,86 @@ Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& r
     ret_it=expression.end();
     return res;
 }
+///////////////
+//each spot there is a delim in the original string, put spaces around it
+std::string insertCharByDelim(const std::string& str,const std::string delim,char char_to_insert){
+    std::string res;
+    for(auto it=str.begin();it!=str.end();it++){
+        //if character is in delim, push it with spaces around it
+        if (delim.find(*it)!=std::string::npos){
+            res+=char_to_insert;res+=*it; res+=char_to_insert;
+        }                
+        //else , just push it
+        else{
+            res+=*it;
+        }
+    }    
+    return res;
+}
+
+/////////////////////////////////////////////////
+/////// FUNCTIONS GRAVEYARD ///////////////////
+///////////////////////////////////////////////
+/////////////// RIP //////////////////////////
+////////////////////////////////////////////
+/*
+Tokens stringToTokens(const std::string& str){
+    const std::string delims= "+-*^!,<>(){}|=";
+    std::string str_spaces_inserted=insertCharByDelim(str,delims,'\0');
+    std::stringstream ss(str_spaces_inserted);
+    std::string tmp;
+    Tokens words;
+    while(getline(ss,tmp,('\0'))){
+        words.push_back(tmp);
+    }
+    //remove spaces
+    std::regex only_null("[\\0]*");
+    return filterTokensByRegex(words,only_null);
+}
+bool fileNameFix(Tokens& filename_before_fix,const std::string& command){
+    std::string
+}
+bool parseFileCommand(const Tokens& tokens,Tokens& res_tokens, const std::string& command){
+    Tokens filename;
+    Tokens graph_expression;
+    Graph res_graph;
+    Tokens::const_iterator i;
+    if (tokens.size()>=6&&tokens[0]=="save"&&tokens[1]=="("&& *tokens.end()==")"){
+        //search for where the filename starts 
+        for (auto it = tokens.end();it!=tokens.begin();it--){
+            if (*it==","){
+                i=it;
+                break;
+            }            
+        } 
+        filename=inRange(tokens,i,tokens.end());
+        graph_expression=(tokens,tokens.begin()+2,i);
+        try{
+            res_graph=makeGraph(graph_expression);
+        }
+        catch{
+            throw IllegalGraphExpression(TokensToString(graph_expression));
+        }
+        try{
+            fileNameFix(filename,command);
+        }
+    }
+}
+
+Tokens fileNameIdentifier(const std::string& str){
+    Tokens res_tokens;
+    std::string temp_str =str;
+    std::regex save("save\\([.]*,[^()<+,]*\\)");        
+    std::regex load("load\\(");
+    std::string allegady_filename;
+    std::string subString;
+    std::cmatch match_save_start;
+    int it_position=0;
+    std::string::const_iterator it=str.begin();
+    //look for saves
+    while (it!=str.end()){
+        if( std::regex_search(temp_str,m,save)){
+        }
+    }
+}
+*/

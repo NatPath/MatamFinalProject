@@ -20,14 +20,18 @@ enum Command {ASSIGN_OP,
               SAVE_OP
               };
 class Gcalc{
-    SymbolTable variables;
-    Mode mode; 
-    bool quit_flag;
+    SymbolTable variables; // the memory of the program, contains all the variables as strings and links them to a Graph
+    Mode mode; // mode of Gcalc 
+    bool quit_flag; // gets quit_flag when quit() is called.
     public:
     Gcalc(Mode mode);
+    //
     void start();
+    //starts proccessing the command, sending it to calc_parser for Tokenization etc..
     void parse_command(const std::string& command);
+    //adds a graph to the calculator
     void addGraph(Graph g);
+    //tries making a Graph out of Tokens expression, throws exceptions 
     Graph makeGraph(const Tokens& expression) const;
     //commands
     void who() const;

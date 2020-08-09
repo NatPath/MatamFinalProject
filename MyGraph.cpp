@@ -1,11 +1,5 @@
 #include "MyGraph.h"
-#include <bitset>
 
-/*
-bool check_graph_validity(Vertices vertices, Edges edges){
-    
-}
-*/
 ////// non member functions
 bool check_graph_validity(const Vertices& v,const Edges& e){
     for(auto it =e.begin(); it!=e.end(); it++){

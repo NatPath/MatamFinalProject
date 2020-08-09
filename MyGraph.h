@@ -53,7 +53,6 @@ class Graph {
     void addEdge(const Vertex& v1, const Vertex& v2);
     
 };
-//maybe const??
 Graph full_graph(const Vertices& v);
 bool check_graph_validity(const Vertices& vertices,const Edges& edges);
 void graphToBinaryFile(const Graph& graph,std::ofstream& file);
