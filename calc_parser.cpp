@@ -86,6 +86,7 @@ std::string insertSpaces(const std::string& str,const std::string delim){
     }    
     return res;
 }
+/* OLD BUT GOLD
 Tokens stringToTokens(const std::string& str){
     const std::string delims= "+-*^!,<>(){}|=";
     std::string str_spaces_inserted=insertSpaces(str,delims);
@@ -98,6 +99,19 @@ Tokens stringToTokens(const std::string& str){
     //remove spaces
     std::regex only_spaces ("[\\s]*");
     return filterTokensByRegex(words,only_spaces);
+}
+*/
+Tokens stringToTokens(const std::string& str){
+    const std::string delims= "+-*^!,<>(){}|=";
+    std::string str_spaces_inserted=insertCharByDelim(str,delims,'\0');
+    std::stringstream ss(str_spaces_inserted);
+    std::string tmp;
+    Tokens words;
+    while(getline(ss,tmp,('\0'))){
+        words.push_back(tmp);
+    }
+    //remove spaces
+    return filterSpacesPreAndPostFixFromTokens(words);
 }
 const std::string TokensToString(const Tokens& tokens){
     std::string res;
@@ -459,6 +473,34 @@ std::string insertCharByDelim(const std::string& str,const std::string delim,cha
         }
     }    
     return res;
+}
+
+//Filter spaces from beginning and ending of a string
+std::string filterSpacesFromString(const std::string& unfiltered_string){
+    std::string res_string = unfiltered_string;
+    std::regex space_beginning("^[\\s]+");
+    std::regex space_ending("[\\s]+$");
+    std::smatch beginning_match;
+    std::smatch ending_match;
+    std::regex_search(unfiltered_string,beginning_match,space_beginning);
+    std::regex_search(unfiltered_string,ending_match,space_ending);                
+    //res_string=unfiltered_string.substr(beginning_match[0].pos(),ending_match.);
+    res_string=std::regex_replace(unfiltered_string,space_beginning,"");
+    res_string=std::regex_replace(res_string,space_ending,"");
+    return res_string;
+
+}
+//Filter Tokens spaces from beginning and ending
+Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens){
+    Tokens res;        
+    std::string string_after_filter;
+    for (auto it = unfiltered_tokens.begin();it!=unfiltered_tokens.end();it++){
+        string_after_filter=filterSpacesFromString(*it);
+        if(string_after_filter!=""){
+            res.push_back(string_after_filter);
+        }
+    }
+    return res;    
 }
 
 /////////////////////////////////////////////////

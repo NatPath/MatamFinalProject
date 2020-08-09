@@ -132,9 +132,9 @@ G2
 G3
 SIMPLE
 Error: Undefined variable: G#
-Error: Undefined variable: G 3
+Error: Unrecognized Command: delete(G 3)
 Error: Unrecognized Command: who3
-Error: Graph name is illegal
+Error: Unrecognized Command: re set     ={}
 Error: Unrecognized Command: quit       , 
 Error: Illegal Assignment Expression:  { reset , quit | < reset , quit > , < reset , quit > }
 quit

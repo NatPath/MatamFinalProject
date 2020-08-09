@@ -24,6 +24,7 @@ Tokens stringToTokens(const std::string& str);
 //makes tokens into one long string
 const std::string TokensToString(const Tokens& tokensm);
 bool validGraphInitialization(const Tokens& expression,Graph& g);
+//makes a
 bool complexGraphExpression(const Tokens& expression, Graph& g);
 bool validGraphLoad(const Tokens& expression,Graph& g);
 
@@ -31,12 +32,12 @@ bool validGraphLoad(const Tokens& expression,Graph& g);
 bool legalVertices(const Vertices& vertices);
 bool legalEdges(const Edges& edges);
 
-//binary handeling functions
+//binary graph handeling functions
 Graph binaryToGraph(std::vector<unsigned char>& file);
 std::vector<unsigned char> graphToBinary(const Graph& graph);
 
 enum ParanthesesTypes {CURLY,SMOOTH};
-//Make a token
+//Make a token starting with an opening parentheses and stops with a blanced closer
 Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,Tokens::const_iterator& jt,bool* balanced=0);
 
 //trims even number of "!" which are side by side, makes code faster I guess
@@ -54,6 +55,7 @@ Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& i
 std::string insertCharByDelim(const std::string& str,const std::string delim,char char_to_insert);
 
 
+Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens);
 
 
 
