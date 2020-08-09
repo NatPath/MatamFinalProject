@@ -3,3 +3,5 @@ print(!(!(!(!(!(!!({A,B})+load(output_1.gf)))))))
 loadRoar =!(({[;af][;[nasty[[;]]]],b,af|<b,af>})+{a,b,c|<a,b>,<a,c>}^{a,c|<c,a>,<a,c>})
 save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )
 print(KingHaim)
+
+b=(((((load(ab_file. ggf ;    )+{}+{a,b}+!{a,b}+((({a,b}+load(ab_file. ggf ;)+{a,d}+{})))+{d,c}+{}+load( ab_file. ggf ;))))))

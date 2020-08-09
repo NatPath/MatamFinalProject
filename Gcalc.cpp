@@ -199,27 +199,6 @@ void Gcalc::save_op(const Tokens& expression) const{
         throw CantWriteToFileException(filename);
     }
 }
-// OLD BUT GOLD
-/*
-void Gcalc::save_op(const Tokens& expression) const{
-    Graph g;
-    std::string filename = expression[expression.size()-1];
-    if (expression[expression.size()-2]!=","){
-        throw IllegalSaveExpression(TokensToString(expression));
-    }
-    Tokens graph_expression=inRange(expression,0,expression.size()-2);
-
-    g=makeGraph(graph_expression);
-
-    std::ofstream file(filename,std::ios_base::binary);        
-    if (file.is_open()){
-        graphToBinaryFile(g,file);       
-    }
-    else{
-        throw CantWriteToFileException(filename);
-    }
-}
-*/
 
 //in Gcalc only because it uses makeGraph.. should have done better designing
 bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::const_iterator& it) const{

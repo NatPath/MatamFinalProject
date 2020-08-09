@@ -15,16 +15,11 @@ bool validVertexName(const std::string& vertex_name){
     std::regex contains_only_reg ("[[:alnum:]\\[\\];]*");
     bool contains_only = std::regex_match(vertex_name,contains_only_reg);
     if (!contains_only){
-        //std::cout<<"Contains an illegal Character"<<std::endl;
-        //print("contains illegal character");
         return false;
-        //throw ParserException("Vertex name Contains an illegal Character");
     }
     bool parenthesesBalanced=checkParenthesesBalance(vertex_name);
-    //std::regex semicol_in_the_middle_reg ("([^;]*(\\[[^\\]]*\\])*[^;]*)*");
     if (!parenthesesBalanced){
         return false;
-        //throw ParserException("Vertex name's Parentheses rules are not met (might be regarding semicolumn)");
     }
 
     return contains_only&&parenthesesBalanced;
@@ -86,21 +81,7 @@ std::string insertSpaces(const std::string& str,const std::string delim){
     }    
     return res;
 }
-/* OLD BUT GOLD
-Tokens stringToTokens(const std::string& str){
-    const std::string delims= "+-*^!,<>(){}|=";
-    std::string str_spaces_inserted=insertSpaces(str,delims);
-    std::stringstream ss(str_spaces_inserted);
-    std::string tmp;
-    Tokens words;
-    while(getline(ss,tmp,(' '))){
-        words.push_back(tmp);
-    }
-    //remove spaces
-    std::regex only_spaces ("[\\s]*");
-    return filterTokensByRegex(words,only_spaces);
-}
-*/
+
 Tokens stringToTokens(const std::string& str){
     const std::string delims= "+-*^!,<>(){}|=";
     std::string str_spaces_inserted=insertCharByDelim(str,delims,'\0');
@@ -121,7 +102,7 @@ const std::string TokensToString(const Tokens& tokens){
     return res;
 }
 
-//needs splitin!!!!!!1
+//a function which parses the 
 bool validGraphInitialization(const Tokens& expression,Graph& graph){
     Edges edges;
     Vertices vertices;
@@ -140,7 +121,6 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
             return true;
         }
         //
-        //Tokens modified_expression=inRange(expression,1,expression.size()-1);
         //find '|'
         auto pipe = std::find(expression.begin(),expression.end()-1,"|");
         bool expecting_column=false;
@@ -172,11 +152,12 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
         else{
             return false;
         }
-        //all elments right of pipe should behave
+        //all elements right of pipe should behave
         if ((expression.end()-pipe)%6!=1){
             return false;
         }
         expecting_column=false;
+        //iterates the edges part of the expression
         for(auto it=pipe+1;it!=expression.end()-1;expecting_column=!expecting_column){
             if (expecting_column){
                 if(*it!=","){
@@ -284,27 +265,7 @@ bool validGraphLoad(const Tokens& expression,Graph& g){
         return false;
     }
 }
-/*
-bool validGraphLoad(const Tokens& expression,Graph& g){
-    if( expression.size()!=4){
-        return false;
-    }
-    if (expression[0]=="load" && expression[1]=="(" && expression[3]==")"){
-        std::ifstream file(expression[2],std::ios_base::binary);        
-        if (file.is_open()){
-            std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file),{});
-            g=binaryToGraph(buffer);
-            return true;
-        }
-        else{
-            throw FileDoesntExist(expression[2]);
-        }
-    }
-    else{
-        return false;
-    }
-}
-*/
+
 Graph binaryToGraph(std::vector<unsigned char>& file){
     Graph res_graph;
     size_t vector_size= file.size();
@@ -313,7 +274,7 @@ Graph binaryToGraph(std::vector<unsigned char>& file){
     }
     unsigned int num_vertices= file[3]<<24 | file[2]<<16 | file[1]<<8 | file[0];
     unsigned int num_edges=file[7]<<24|file[6]<<18|file[5]<<8|file[4];
-    //a state machine to parse the binary into a graph
+    //a state machine (FSM) to parse the binary into a graph
     enum STATE{VERTEX_BEGIN,VERTEX_CHAR,EDGE_BEGIN1,EDGE_CHAR1,EDGE_BEGIN2,EDGE_CHAR2};
     if (num_vertices==0 && num_edges==0 && vector_size==2){
         return Graph();
@@ -410,6 +371,7 @@ Graph binaryToGraph(std::vector<unsigned char>& file){
             break;
         }
     }
+    //checks if the specifications of the graph are true and the graph created is legal
     if (vertices.size()==num_vertices && edges.size()==num_edges &&
      legalVertices(vertices)&&check_graph_validity(vertices,edges)){
          res_graph.setEdges(edges);        

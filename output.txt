@@ -12,7 +12,87 @@ k
 $
 b k
 k b
-Error: basic_string::_M_construct null not valid
+A
+B
+D0nt
+Fa1l
+I
+Please
+T0
+W4nt
+saveMe
+$
+A B
+A D0nt
+A Fa1l
+A I
+A Please
+A T0
+A W4nt
+A saveMe
+B A
+B D0nt
+B Fa1l
+B I
+B Please
+B T0
+B W4nt
+B saveMe
+D0nt A
+D0nt B
+D0nt Fa1l
+D0nt I
+D0nt Please
+D0nt T0
+D0nt W4nt
+D0nt saveMe
+Fa1l A
+Fa1l B
+Fa1l D0nt
+Fa1l I
+Fa1l Please
+Fa1l T0
+Fa1l W4nt
+Fa1l saveMe
+I A
+I B
+I D0nt
+I Fa1l
+I Please
+I T0
+I W4nt
+I saveMe
+Please A
+Please B
+Please D0nt
+Please Fa1l
+Please I
+Please T0
+Please W4nt
+Please saveMe
+T0 A
+T0 B
+T0 D0nt
+T0 Fa1l
+T0 I
+T0 Please
+T0 W4nt
+T0 saveMe
+W4nt A
+W4nt B
+W4nt D0nt
+W4nt Fa1l
+W4nt I
+W4nt Please
+W4nt T0
+W4nt saveMe
+saveMe A
+saveMe B
+saveMe D0nt
+saveMe Fa1l
+saveMe I
+saveMe T0
+saveMe W4nt
 Error: Illegal Assignment Expression: {n0,m4tt3r,h0w,l0ng|<n0,m4773r>,<h0w,l0ng>}
 Error: Undefined variable: G2
 Always
@@ -70,4 +150,15 @@ $
 c a
 Error: Unrecognized Command: save(loadRoar*loadRoar-(loadRoar*loadRoar),output_2.gf      )+
 Error: Illegal Graph Expression: ({}+({})^{a,b,c})load(output_1)+load(output_1)+load(output_2.gf)
-Error: basic_string::_M_construct null not valid
+Pokem0n
+This
+a
+c
+is
+my
+$
+c a
+a
+c
+$
+c a

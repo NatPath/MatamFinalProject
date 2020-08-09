@@ -3,17 +3,13 @@
 ////// non member functions
 bool check_graph_validity(const Vertices& v,const Edges& e){
     for(auto it =e.begin(); it!=e.end(); it++){
-        /*
-        if (!setContains(v,it->first)||!setContains(v,it->second)){
-            return false;
-        }
-        */
        if(!edgeValid(*it,v)){
            return false;
        }
     }
     return true;
 }
+//checks if edges connect vertices
 bool edgeValid(const Edge& edge,const Vertices& vertices){
     return setContains(vertices,edge.first)&&setContains(vertices,edge.second);
 }
