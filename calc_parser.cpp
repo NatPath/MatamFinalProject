@@ -251,10 +251,12 @@ Tokens::const_iterator findFirstApearanceOf(const Tokens& expression,const std::
     }
     return expression.end();
 }
+
 bool validGraphLoad(const Tokens& expression,Graph& g){
     if(expression.size()<=3){
         return false;
     }
+    //first coming closing parantheses is at the end of the expression
     Tokens::const_iterator it = findFirstApearanceOf(expression,")");
     if (it!=expression.end()-1){
         return false;
@@ -283,12 +285,15 @@ bool validGraphLoad(const Tokens& expression,Graph& g){
 Graph binaryToGraph(std::vector<unsigned char>& file){
     Graph res_graph;
     size_t vector_size= file.size();
+    //atleast 8 bytes for describing how many vertices and edges,
     if (vector_size<8){
         throw FileDataIsNotAGraph();
     }
+    //binary operation on first 8 bytes, grabing the information about how many vertices and edges
     unsigned int num_vertices= file[3]<<24 | file[2]<<16 | file[1]<<8 | file[0];
     unsigned int num_edges=file[7]<<24|file[6]<<18|file[5]<<8|file[4];
     //a state machine (FSM) to parse the binary into a graph
+    //code duplication in this piece is intentional, allows logic readability
     enum STATE{VERTEX_BEGIN,VERTEX_CHAR,EDGE_BEGIN1,EDGE_CHAR1,EDGE_BEGIN2,EDGE_CHAR2};
     if (num_vertices==0 && num_edges==0 && vector_size==2){
         return Graph();
@@ -335,7 +340,7 @@ Graph binaryToGraph(std::vector<unsigned char>& file){
 
             /////////////////
             case EDGE_BEGIN1:
-            //current_word_length=*it;
+            //the begining of the edge is supposed to be atleast 4 bytes long
             if (file.end()-it<4){
                 throw FileDataIsNotAGraph();
             }
@@ -361,7 +366,7 @@ Graph binaryToGraph(std::vector<unsigned char>& file){
 
             /////////////////
             case EDGE_BEGIN2:
-            //current_word_length=*it;
+
             if (file.end()-it<4){
                 throw FileDataIsNotAGraph();
             }
@@ -397,7 +402,6 @@ Graph binaryToGraph(std::vector<unsigned char>& file){
      }
 }
 
-//can template this.. if you have time in the end
 bool legalVertices(const Vertices& vertices){
     for (auto it=vertices.begin();it!=vertices.end();it++){
         if (!validVertexName(*it)){

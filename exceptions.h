@@ -83,5 +83,4 @@ class BinaryOperatorFault: public ParserException{
     ParserException("'"+bop+"'is NOT a binary operator"){};
 };
 
-
 #endif

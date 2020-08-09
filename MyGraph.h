@@ -8,7 +8,6 @@
 #include <utility>
 #include <algorithm>
 #include <fstream>
-
 #include "my_utils.h"
 #include "exceptions.h"
 
@@ -44,8 +43,8 @@ class Graph {
     Graph operator-(const Graph& b) const;//difference
     Graph operator*(const Graph& b) const;//product
     Graph operator!() const;//complement
-    bool operator==(const Graph& b) const;
-    bool operator!=(const Graph& b) const;
+    bool operator==(const Graph& b) const;//compare
+    bool operator!=(const Graph& b) const;//
     void printGraph() const;
     //for python
     void addVertex(const Vertex& v);
@@ -53,11 +52,15 @@ class Graph {
     void addEdge(const Vertex& v1, const Vertex& v2);
     
 };
+//returns a full graph in the context of given vertices
 Graph full_graph(const Vertices& v);
+//check if all the vertices and edges make sense (not edge connecting to vertices which are not present etc..)
 bool check_graph_validity(const Vertices& vertices,const Edges& edges);
+//Puts graph data into a binary file
 void graphToBinaryFile(const Graph& graph,std::ofstream& file);
+//check if edge is valid in the context of which vertices are present
 bool edgeValid(const Edge& edge,const Vertices& vertices);
-
+//apply binary operation between two graph arguements
 Graph applyBinaryOp(const Graph& g1,const Graph& g2,std::string& operator_token);
 
 #endif

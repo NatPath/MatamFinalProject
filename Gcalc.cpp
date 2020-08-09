@@ -186,6 +186,7 @@ void Gcalc::save_op(const Tokens& expression) const{
         throw IllegalSaveExpression(TokensToString(expression));
     }
     std::string filename = TokensToString(Tokens(it+1,expression.end()));
+
     if (filename==""){
         throw CantWriteToFileException("EmptyFileName");
     }
