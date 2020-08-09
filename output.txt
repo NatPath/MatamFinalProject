@@ -162,3 +162,11 @@ a
 c
 $
 c a
+Error: Graph name is illegal
+Start
+a
+b
+c
+lastThing
+$
+a b

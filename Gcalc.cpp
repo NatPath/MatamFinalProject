@@ -262,7 +262,6 @@ bool Gcalc::identifyFirstExpression(const Tokens& expression,Graph& g,Tokens::co
             first_expression=findClosingParantheses(future_expression,SMOOTH,dummy_it);
             int parantheses_length=dummy_it-future_expression.begin();
             first_expression=Tokens(expression.begin(),expression.begin()+parantheses_length+1);
-            //first_expression=findNextBinaryOperator(expression,dummy_it);
             if (validGraphLoad(first_expression,g)){
                 it+=first_expression.size();
                 return true;

@@ -59,6 +59,8 @@ Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens);
 
 Tokens::const_iterator lastSemiColumn(const Tokens& save_expression);
 
+Tokens::const_iterator firstFirstApearanceOf(const Tokens& expression,const std::string& str);
+
 
 
 

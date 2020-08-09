@@ -202,6 +202,7 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     //shouldn't get here
     return false;
 }
+//returns sub of tokens containing only the first balanced parantheses expression. jt will be set to one after the closing parantheses
 Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,Tokens::const_iterator& jt,bool* balanced){
     std::string closing_p;
     std::string opening_p;
@@ -242,12 +243,25 @@ Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,To
     return subexpression;
 }
 
+Tokens::const_iterator findFirstApearanceOf(const Tokens& expression,const std::string& str){
+    for (auto it = expression.begin();it!=expression.end();it++){
+        if (*it==str){
+            return it;
+        }        
+    }
+    return expression.end();
+}
 bool validGraphLoad(const Tokens& expression,Graph& g){
     if(expression.size()<=3){
         return false;
     }
+    Tokens::const_iterator it = findFirstApearanceOf(expression,")");
+    if (it!=expression.end()-1){
+        return false;
+    }
     if (expression[0]=="load" && expression[1]=="(" && *(expression.end()-1)==")"){
         std::string filename=TokensToString(Tokens(expression.begin()+2,expression.end()-1));      
+        checkParenthesesBalance(filename);
         if (filename.find('(')!=std::string::npos||filename.find(')')!=std::string::npos||filename.find(',')!=std::string::npos){
             throw FileDoesntExist(filename);
         }
