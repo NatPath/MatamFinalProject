@@ -1,2 +1,0 @@
-save( {a,b,c | < a,b>},  ab_file. ggf ;    )
-b=(((((load(ab_file. ggf ;    )+{}+{a,b}+!{a,b}+((({a,b}+load(ab_file. ggf ;)+{a,d}+{})))+{d,c}+{}+load( ab_file. ggf ;))))))
