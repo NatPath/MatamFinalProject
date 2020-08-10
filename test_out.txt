@@ -163,10 +163,39 @@ c
 $
 c a
 Error: Graph name is illegal
+Really
 Start
 a
 b
 c
 lastThing
 $
-a b
+Really Start
+Really a
+Really b
+Really c
+Really lastThing
+Start Really
+Start a
+Start b
+Start c
+Start lastThing
+a Really
+a Start
+a c
+a lastThing
+b Really
+b Start
+b a
+b c
+b lastThing
+c Really
+c Start
+c a
+c b
+c lastThing
+lastThing Really
+lastThing Start
+lastThing a
+lastThing b
+lastThing c

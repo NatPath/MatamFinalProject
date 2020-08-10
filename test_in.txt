@@ -50,4 +50,4 @@ b=(((((load(ab_file. ggf ;    )+{}+{a,b}+!{a,b}+((({a,b}+load(ab_file. ggf ;)+{a
 Final Boss= {}
 save (  !({this,is,the,end}+{ S[;]murfs  , Olymp[i;]][i]cs,Matrix, tf2  }*{Graph,Parser| <Graph,Parser>}, final file-+{}+-put  here  )
 FinalBoss= ((({Start}+load(ab_file. ggf ;)+!((load(final file-+{}+-put  here)+load(    final file-+{}+-put  here     )+({Final} ^ {please, pass}))+{lastThing}))))
-print(FinalBoss)
+print((!!!!!!(!(FinalBoss+{Really}))))

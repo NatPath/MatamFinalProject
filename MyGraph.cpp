@@ -13,6 +13,7 @@ bool check_graph_validity(const Vertices& v,const Edges& e){
 bool edgeValid(const Edge& edge,const Vertices& vertices){
     return setContains(vertices,edge.first)&&setContains(vertices,edge.second);
 }
+//
 void graphToBinaryFile(const Graph& graph,std::ofstream& file){
 
     const Edges edges= graph.getEdges();
