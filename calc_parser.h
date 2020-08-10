@@ -55,7 +55,7 @@ Tokens isolateNeg(const Tokens& expression);
 
 //checks if a string is a binary operator
 bool isBinaryOp(std::string str);
-//
+//find the next binary operator, sets 'it' to it and return sub tokens util it apears 
 Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& it);
 //gets a string and returns a string with a given char insertet before and after every element of delim
 std::string insertCharByDelim(const std::string& str,const std::string delim,char char_to_insert);
@@ -63,7 +63,7 @@ std::string insertCharByDelim(const std::string& str,const std::string delim,cha
 Tokens filterSpacesPreAndPostFixFromTokens(const Tokens& unfiltered_tokens);
 //returns an iterator to the last semi column in the expression( if not found returns end())
 Tokens::const_iterator lastSemiColumn(const Tokens& save_expression);
-//
+//retruns an iterator to the first element in the Tokens which is identical to str
 Tokens::const_iterator firstFirstApearanceOf(const Tokens& expression,const std::string& str);
 
 

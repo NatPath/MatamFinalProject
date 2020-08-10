@@ -102,7 +102,7 @@ const std::string TokensToString(const Tokens& tokens){
     return res;
 }
 
-//a function which parses the 
+//a function which parses the initialization expression
 bool validGraphInitialization(const Tokens& expression,Graph& graph){
     Edges edges;
     Vertices vertices;
@@ -519,70 +519,3 @@ Tokens::const_iterator lastSemiColumn(const Tokens& save_expression){
     }            
     return save_expression.begin();
 }
-
-/////////////////////////////////////////////////
-/////// FUNCTIONS GRAVEYARD ///////////////////
-///////////////////////////////////////////////
-/////////////// RIP //////////////////////////
-////////////////////////////////////////////
-/*
-Tokens stringToTokens(const std::string& str){
-    const std::string delims= "+-*^!,<>(){}|=";
-    std::string str_spaces_inserted=insertCharByDelim(str,delims,'\0');
-    std::stringstream ss(str_spaces_inserted);
-    std::string tmp;
-    Tokens words;
-    while(getline(ss,tmp,('\0'))){
-        words.push_back(tmp);
-    }
-    //remove spaces
-    std::regex only_null("[\\0]*");
-    return filterTokensByRegex(words,only_null);
-}
-bool fileNameFix(Tokens& filename_before_fix,const std::string& command){
-    std::string
-}
-bool parseFileCommand(const Tokens& tokens,Tokens& res_tokens, const std::string& command){
-    Tokens filename;
-    Tokens graph_expression;
-    Graph res_graph;
-    Tokens::const_iterator i;
-    if (tokens.size()>=6&&tokens[0]=="save"&&tokens[1]=="("&& *tokens.end()==")"){
-        //search for where the filename starts 
-        for (auto it = tokens.end();it!=tokens.begin();it--){
-            if (*it==","){
-                i=it;
-                break;
-            }            
-        } 
-        filename=inRange(tokens,i,tokens.end());
-        graph_expression=(tokens,tokens.begin()+2,i);
-        try{
-            res_graph=makeGraph(graph_expression);
-        }
-        catch{
-            throw IllegalGraphExpression(TokensToString(graph_expression));
-        }
-        try{
-            fileNameFix(filename,command);
-        }
-    }
-}
-
-Tokens fileNameIdentifier(const std::string& str){
-    Tokens res_tokens;
-    std::string temp_str =str;
-    std::regex save("save\\([.]*,[^()<+,]*\\)");        
-    std::regex load("load\\(");
-    std::string allegady_filename;
-    std::string subString;
-    std::cmatch match_save_start;
-    int it_position=0;
-    std::string::const_iterator it=str.begin();
-    //look for saves
-    while (it!=str.end()){
-        if( std::regex_search(temp_str,m,save)){
-        }
-    }
-}
-*/
