@@ -171,7 +171,7 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
             try{
                 edgers=inRange(expression,start,start+5);
             }
-            catch(OutOfRange e){
+            catch(OutOfRange& e){
                 return false;
             }
             if (validEdgeName(edgers)){
@@ -199,8 +199,6 @@ bool validGraphInitialization(const Tokens& expression,Graph& graph){
     else{
         return false;
     }
-    //shouldn't get here
-    return false;
 }
 //returns sub of tokens containing only the first balanced parantheses expression. jt will be set to one after the closing parantheses
 Tokens findClosingParantheses(const Tokens& expression,ParanthesesTypes ptype,Tokens::const_iterator& jt,bool* balanced){
@@ -263,7 +261,6 @@ bool validGraphLoad(const Tokens& expression,Graph& g){
     }
     if (expression[0]=="load" && expression[1]=="(" && *(expression.end()-1)==")"){
         std::string filename=TokensToString(Tokens(expression.begin()+2,expression.end()-1));      
-        checkParenthesesBalance(filename);
         if (filename.find('(')!=std::string::npos||filename.find(')')!=std::string::npos||filename.find(',')!=std::string::npos){
             throw FileDoesntExist(filename);
         }
@@ -426,7 +423,7 @@ Tokens negTrim(const Tokens& expression){
     }
 }
 
-bool isBinaryOp(std::string str){
+bool isBinaryOp(const std::string& str){
     return str=="+" || str=="-" || str=="*" ||str=="^";
 }
 Tokens isolateNeg(const Tokens& expression,unsigned int& place){

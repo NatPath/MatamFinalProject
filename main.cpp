@@ -12,13 +12,13 @@ void batch_mode(const char* input_file,const char* output_file){
     Gcalc calc(batch);
     std::ifstream in(input_file);
     if(!in){
-        std::cerr<<"cannot open file "<<input_file<<std::endl;
+        std::cerr<<"Error: cannot open file "<<input_file<<std::endl;
         return;
     }
     std::cin.rdbuf(in.rdbuf());
     std::ofstream out(output_file);
     if(!out){
-        std::cerr<<"cannot open file "<<output_file<<std::endl;
+        std::cerr<<"Error: cannot open file "<<output_file<<std::endl;
         return;
     }
     std::cout.rdbuf(out.rdbuf());

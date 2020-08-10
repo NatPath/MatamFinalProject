@@ -54,7 +54,7 @@ Tokens negTrim(const Tokens& expression);
 Tokens isolateNeg(const Tokens& expression);
 
 //checks if a string is a binary operator
-bool isBinaryOp(std::string str);
+bool isBinaryOp(const std::string& str);
 //find the next binary operator, sets 'it' to it and return sub tokens util it apears 
 Tokens findNextBinaryOperator(const Tokens& expression,Tokens::const_iterator& it);
 //gets a string and returns a string with a given char insertet before and after every element of delim

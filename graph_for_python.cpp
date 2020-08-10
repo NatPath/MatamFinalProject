@@ -23,27 +23,33 @@ bool checkArguments(Graph* a1){
     return true;
 }
 Graph* applyOperator(Graph* a1,Graph* a2,Graph* out,binary_op op){
-    if(!checkArguments(a1,a2,out)){
+    try{
+        if(!checkArguments(a1,a2,out)){
+            return nullptr;
+        }
+        switch(op){
+            case UNION:
+            *out=*a1+*a2;        
+            break;
+
+            case INTERSECTION:
+            *out=(*a1)^(*a2);
+            break;
+
+            case DIFFERENCE:
+            *out=(*a1)-(*a2);
+            break;
+            
+            case PRODUCT:
+            *out=*a1*(*a2);
+            break;
+        }
+        return out;
+    }
+    catch(std::exception& e){//might catch some bad_alloc or something while creating the edges or vertices..
+        std::cout<<"Error: "<<e.what()<<std::endl;
         return nullptr;
     }
-    switch(op){
-        case UNION:
-        *out=*a1+*a2;        
-        break;
-
-        case INTERSECTION:
-        *out=(*a1)^(*a2);
-        break;
-
-        case DIFFERENCE:
-        *out=(*a1)-(*a2);
-        break;
-        
-        case PRODUCT:
-        *out=*a1*(*a2);
-        break;
-    }
-    return out;
 }
 
 Graph* create(){
@@ -52,7 +58,7 @@ Graph* create(){
         g=new Graph();
     }
     catch(std::exception& e){
-        std::cout<<"Error: " << +e.what()<<std::endl;
+        std::cout<<"Error: " << e.what()<<std::endl;
         return nullptr;
     }
     return g;
